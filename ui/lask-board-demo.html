@@ -28,9 +28,11 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 
 /* bottom tabs */
 .tabs{display:flex;flex:none;background:var(--paper);border-top:1px solid var(--line);padding:6px 6px calc(env(safe-area-inset-bottom) + 6px)}
-.tabs button{flex:1;border:0;background:transparent;padding:6px 0 2px;font-size:10.5px;color:#8d8980;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+.tabs button{flex:1;border:0;background:transparent;padding:7px 0 5px;transition:.15s;font-size:10.5px;color:#8d8980;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
 .tabs button i{font-style:normal;font-size:19px;line-height:1}
-.tabs button.on{color:var(--ink)}
+.tabs button.on{color:#fff;background:var(--ink);border-radius:12px}
+.tabs button.on i{color:#fff}
+.tabs{gap:4px}
 .tabs button .dot{position:absolute;top:2px;right:calc(50% - 18px);min-width:16px;height:16px;border-radius:8px;background:var(--home);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
 
 .sec{display:flex;align-items:baseline;justify-content:space-between;margin:22px 4px 8px}
@@ -165,6 +167,55 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 .who4 span.rec::after{content:" ◂ 提案";font-weight:500;opacity:.7}
 .legend{font-size:11px;color:var(--mute);line-height:1.8;padding:10px 6px 0;display:flex;flex-wrap:wrap;gap:4px 12px}
 .legend em{font-style:normal;flex-basis:100%}
+.tile.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.tile.dim{opacity:.4}
+.dl{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 14px;border-top:1px solid var(--line);align-items:center}
+.dl:first-child{border-top:0}
+.dl .t{font-size:14px;font-weight:600;line-height:1.45}
+.dl .m{font-size:11px;color:var(--mute);margin-top:2px}
+.dl .st{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+.st.run{background:#dff0e8;color:var(--ai)}.st.stop{background:#f6e3df;color:var(--home)}.st.keep{background:#f7ecd8;color:var(--health)}.st.cand{background:var(--soft);color:var(--mute)}
+.kn{display:grid;grid-template-columns:44px 1fr 28px;gap:10px;align-items:center;padding:9px 0;font-size:12.5px;font-weight:700}
+.kn b{text-align:right;font-variant-numeric:tabular-nums}
+.kn input{width:100%;-webkit-appearance:none;appearance:none;height:8px;border-radius:4px;background:#ecebe5;outline:0}
+.kn input::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+/* LP */
+.lp{margin:0 -14px;padding:0 0 30px}
+.lph{background:var(--ink);color:#fff;padding:36px 24px 30px}
+.eyebrow{font-size:11px;letter-spacing:.2em;color:#b3ada0;font-weight:700}
+.lph h1{font-size:26px;line-height:1.4;margin:14px 0 14px;letter-spacing:-.02em}
+.lph h1 em{font-style:normal;color:#f2e2b8}
+.lph p{font-size:14px;line-height:1.9;color:#cfc9bc;margin:0 0 20px}
+.pct{display:grid;grid-template-columns:1fr 2fr;gap:6px}
+.pct>div{border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;gap:4px}
+.pct b{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.pct span{font-size:10.5px;line-height:1.5;opacity:.85}
+.pa{background:#3d3a34}.pb{background:#67399c}
+.lps{padding:34px 24px 6px;border-top:1px solid var(--line)}
+.lps.dark{background:#e0e8fa;margin:20px 0 0;border:0}
+.num{font-size:11px;letter-spacing:.2em;color:var(--mute);font-weight:800}
+.lps h2{font-size:21px;line-height:1.45;margin:8px 0 12px;letter-spacing:-.02em}
+.lps p{font-size:14px;line-height:1.9;color:var(--ink2);margin:0 0 14px}
+.lps p.sm{font-size:12.5px;color:var(--mute)}
+.lps p b{color:var(--ink);font-weight:700}
+.lpk{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 16px}
+.lpk div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:11px;color:var(--mute)}
+.lpk b{display:block;font-size:17px;color:var(--ink);font-weight:800;letter-spacing:-.02em}
+.lp3{display:grid;gap:8px;margin-bottom:12px}
+.lp3>div{background:var(--paper);border:1.5px dashed #cfcabd;border-radius:14px;padding:13px 14px;display:grid;grid-template-columns:28px 1fr;gap:4px 10px}
+.lp3 i{font-style:normal;font-size:18px;grid-row:span 2}
+.lp3 b{font-size:14.5px}
+.lp3 span{font-size:12px;color:var(--mute);line-height:1.6}
+.lp4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.w{border-radius:14px;padding:13px;font-size:18px;display:flex;flex-direction:column;gap:3px}
+.w b{font-size:14px}.w span{font-size:11px;line-height:1.5;opacity:.85}
+.w.me{background:var(--ink);color:#fff}.w.ai{background:#dff0e8;color:var(--ai)}.w.out{background:#e0e8fa;color:var(--lan)}.w.ppl{background:#f1ede4;color:var(--ask)}
+.lpq{background:var(--soft);border-left:3px solid var(--ink);padding:14px 16px;font-size:14px;line-height:1.9;color:var(--ink2);border-radius:0 12px 12px 0;margin:6px 0 14px}
+.lpq.big{font-size:15px;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--ink)}
+.lpq small{display:block;margin-top:8px;color:var(--mute);font-size:11px}
+.lp2{display:grid;gap:8px;margin-bottom:12px}
+.lp2>div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.lp2 b{display:block;font-size:15px;margin-bottom:3px}.lp2 span{font-size:12px;color:var(--mute);line-height:1.6}
 </style>
 </head>
 <body>
@@ -322,14 +373,18 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
     <!-- ================= 夢 ================= -->
     <section class="page" id="tree">
       <div class="tabhint">今日と10年が一本の木。止まっている所を赤で出す</div>
-      <div class="sec"><h4>領域</h4><span>大きい数＝件数・赤丸＝止まっている</span></div>
-      <div class="grid">
-        <div class="tile" onclick="go('d1')"><div class="rd">2</div><div class="n" style="color:var(--work)">12</div><div class="l">仕事</div><div class="s">時価総額1,000億・AIワークフォース・Lask・M&A・Plaud…</div></div>
-        <div class="tile" onclick="toast('家庭 6：結衣とスイス／墓参り（大坪家・秋好家）／両親（高槻）／キーちゃん／シャケちゃん…')"><div class="rd">1</div><div class="n" style="color:var(--home)">6</div><div class="l">家庭</div><div class="s">スイス・墓参り・両親…</div></div>
-        <div class="tile" onclick="toast('趣味 9：船／シーシャ／料理道具／服・ガジェット／釣り／PPL／別荘／南極／DJ')"><div class="rd">3</div><div class="n" style="color:var(--hobby)">9</div><div class="l">趣味</div><div class="s">船・釣り・PPL・別荘…</div></div>
-        <div class="tile" onclick="toast('体 4：前橋大会／65kg級を一生維持／睡眠／週5 継続 — 止まり 0')"><div class="n" style="color:var(--health)">4</div><div class="l">体</div><div class="s">前橋・一生維持…</div></div>
-        <div class="tile" onclick="toast('人生 10：海外に住む／南極／チェロ／英語／Die with 0／秋好OS…')"><div class="rd">3</div><div class="n" style="color:var(--dream)">10</div><div class="l">人生</div><div class="s">海外に住む・チェロ…</div></div>
-        <div class="tile" onclick="toast('候補 4：Lask が発言から拾ったが、まだ夢と決めていないもの')"><div class="n" style="color:var(--mute)">4</div><div class="l">候補</div><div class="s">口にしたが決めていない</div></div>
+      <div class="sec"><h4>領域</h4><span>タップで絞り込む・赤丸＝止まっている</span></div>
+      <div class="grid" id="dgrid">
+        <div class="tile" data-area="work" onclick="filterDream('work')"><div class="rd">2</div><div class="n" style="color:var(--work)">12</div><div class="l">仕事</div><div class="s">時価総額1,000億・AIワークフォース・Lask…</div></div>
+        <div class="tile" data-area="home" onclick="filterDream('home')"><div class="rd">1</div><div class="n" style="color:var(--home)">6</div><div class="l">家庭</div><div class="s">スイス・墓参り・両親…</div></div>
+        <div class="tile" data-area="hobby" onclick="filterDream('hobby')"><div class="rd">3</div><div class="n" style="color:var(--hobby)">9</div><div class="l">趣味</div><div class="s">船・釣り・PPL・別荘…</div></div>
+        <div class="tile" data-area="health" onclick="filterDream('health')"><div class="n" style="color:var(--health)">4</div><div class="l">体</div><div class="s">前橋・一生維持…</div></div>
+        <div class="tile" data-area="dream" onclick="filterDream('dream')"><div class="rd">3</div><div class="n" style="color:var(--dream)">10</div><div class="l">人生</div><div class="s">海外に住む・南極・チェロ…</div></div>
+        <div class="tile" data-area="cand" onclick="filterDream('cand')"><div class="n" style="color:var(--mute)">4</div><div class="l">候補</div><div class="s">口にしたが決めていない</div></div>
+      </div>
+      <div id="dlist" class="gone">
+        <div class="sec"><h4 id="dlistTitle">仕事</h4><span onclick="filterDream(null)" style="color:var(--ink);font-weight:700">✕ 全部に戻す</span></div>
+        <div class="card" id="dlistBody"></div>
       </div>
 
       <div class="sec"><h4>🌱 これも、夢ではないですか？</h4><span>登録されていない。Lask が拾った</span></div>
@@ -393,6 +448,16 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
     <!-- ================= 配分 ================= -->
     <section class="page" id="bal">
       <div class="tabhint">操作は 2つだけ：「止める」と「配分を変える」</div>
+      <div class="sec"><h4>つまみ</h4><span>ここを動かすと、明日 出るものが変わります</span></div>
+      <div class="card bars" id="knobs">
+        <div class="kn"><span style="color:var(--work)">仕事</span><input type="range" min="0" max="10" value="7" data-k="work" oninput="knob()"><b id="kv-work">7</b></div>
+        <div class="kn"><span style="color:var(--home)">家庭</span><input type="range" min="0" max="10" value="2" data-k="home" oninput="knob()"><b id="kv-home">2</b></div>
+        <div class="kn"><span style="color:var(--hobby)">趣味</span><input type="range" min="0" max="10" value="3" data-k="hobby" oninput="knob()"><b id="kv-hobby">3</b></div>
+        <div class="kn"><span style="color:var(--health)">体</span><input type="range" min="0" max="10" value="5" data-k="health" oninput="knob()"><b id="kv-health">5</b></div>
+        <div class="kn"><span style="color:var(--dream)">人生</span><input type="range" min="0" max="10" value="2" data-k="dream" oninput="knob()"><b id="kv-dream">2</b></div>
+      </div>
+      <div class="note" id="knobNote">明日 発生する 16件の内訳：仕事 6・家庭 2・趣味 3・体 4・人生 1。あなたの手に残るのは 2つ、残りは AI・外注・人へ。</div>
+
       <div class="sec"><h4>今日の配分</h4><span>カレンダー実績</span></div>
       <div class="card bars">
         <div class="bar2"><span style="color:var(--work);font-weight:700">仕事</span><div class="tr"><i style="width:44%;background:var(--work)"></i></div><span class="v">4.0h</span></div>
@@ -401,7 +466,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
         <div class="bar2"><span style="color:var(--mute);font-weight:700">移動</span><div class="tr"><i style="width:8%;background:var(--gone)"></i></div><span class="v">0.7h</span></div>
         <div class="bar2"><span style="color:var(--dream);font-weight:700">自由</span><div class="tr"><i style="width:33%;background:var(--dream)"></i></div><span class="v">3.0h</span></div>
       </div>
-      <div class="note">今月：家庭 0h・親友 0h・夢（人生）0h。仕事とスポットライトに 9割。年次ノート 2019 から「海外・英語・健康・家族・親孝行」は 1項目も変わっていないのに、<b>家族と親友に時間が付いていない</b>。</div>
+      <div class="note">今月：家庭 0h・親友 0h・夢（人生）0h。年次ノート 2019 から「海外・英語・健康・家族・親孝行」は 1項目も変わっていないのに、<b>家族と親友に時間が付いていない</b>。</div>
 
       <div class="sec"><h4>◎ 自由を増やす提案</h4><span>採用すると 来週から</span></div>
       <div class="card lask">
@@ -540,6 +605,73 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
       <button class="big" style="background:var(--paper);color:var(--ink2);border:1px solid var(--line);box-shadow:none" onclick="toast('降ろしません。13年 降ろさなかったものは、本物です')">この夢を降ろす</button>
     </section>
 
+
+    <!-- ================= Laskとは（LP） ================= -->
+    <section class="page" id="about">
+      <div class="lp">
+        <div class="lph">
+          <div class="eyebrow">Lask とは</div>
+          <h1>あなたが「タスクだ」と思っていることは、<em>本当のタスクの 20%</em> でしかない。</h1>
+          <p>既存のタスク管理は、あなたが認識して、大事だと思って、自分で登録したものしか扱わない。今すぐ・顕在的・緊急・やらないといけないこと。それだけ。</p>
+          <div class="pct"><div class="pa"><b>20%</b><span>自分で登録したタスク<br>＝ 既存ツールが扱う全部</span></div><div class="pb"><b>80%</b><span>本人すら気づいていないタスク<br>＝ Lask が発生させる</span></div></div>
+        </div>
+        <div class="lps">
+          <div class="num">01</div>
+          <h2>全てのデータから、<br>「あなたという OS」を理解する</h2>
+          <p>入力はしない。行動ログ（カレンダー・Slack・X・YouTube・会話・位置）、10年分の手書きノート、あなたの言葉のままの憲法、そして夢のリスト。Lask はそれを毎日読んで、<b>あなたがどういう人か</b>を組み直し続ける。</p>
+          <div class="lpk"><div><b>3,231+</b>行動ログ</div><div><b>30枚</b>年次ノート</div><div><b>4行</b>憲法</div><div><b>48本</b>命題</div><div><b>41件</b>夢</div></div>
+        </div>
+        <div class="lps">
+          <div class="num">02</div>
+          <h2>そこから、3つが出てくる</h2>
+          <div class="lp3">
+            <div><i>◎</i><b>本当にやるべきこと</b><span>あなたが登録していないのに、今日やらないと 10年後が変わるもの。「高宮さんに 30分」「結衣とスイス、子タスク 0」</span></div>
+            <div><i>🧬</i><b>気づいていない価値観</b><span>「幸せ」と言った 3回すべてが「朝、何もしない時間」だった。夢として書いたことは一度もない</span></div>
+            <div><i>🌱</i><b>気づいていない方向性</b><span>一度降ろした「別荘」が 4日後にまた出た。降ろした判断のほうを疑う。9年連続で未達の「英語」は、本当に欲しいのか</span></div>
+          </div>
+          <p class="sm">これが Lask の価値の 1つ目。<b>その人すら気づいていないタスクが、提案される。</b></p>
+        </div>
+        <div class="lps">
+          <div class="num">03</div>
+          <h2>提案されたタスクは、<br>誰がやるかまで分かる</h2>
+          <p>やるのは自分だけではない。AI が終わらせるもの、外に出せるもの、そして<b>人と繋がることで初めて動くもの</b>。Lask は 4つのどれで進むかを提案し、あなたはタップで変えるだけ。</p>
+          <div class="lp4">
+            <div class="w me">✍︎<b>自分</b><span>代わりがいないものだけ。1日 2つ</span></div>
+            <div class="w ai">🤖<b>AI</b><span>調べる・下書き・電話・比較表</span></div>
+            <div class="w out">🤝<b>外注</b><span>ランサーズの人。依頼文は Lask が書く</span></div>
+            <div class="w ppl">👤<b>人</b><span>「調べる」ではなく「聞いてみる」。人が言うから動く</span></div>
+          </div>
+        </div>
+        <div class="lps">
+          <div class="num">04</div>
+          <h2>進捗は、自動で動く</h2>
+          <p>AI が動いた分・人が返事した分・外注が納品した分が、あなた抜きで進む。追いかけるのは Lask。止まったものは詰めず「まだ興味ある？」だけ聞く。お金が動くのは、承認ボタンの 1回だけ。</p>
+          <div class="lpq">「仕事を人にやらせたいのがゴールではない。<b>仕組みとして自動に回っている状態が好き。</b>」</div>
+        </div>
+        <div class="lps">
+          <div class="num">05</div>
+          <h2>操作は 2つしかない</h2>
+          <div class="lp2"><div><b>止める</b><span>「違う」の 1タップ。消した記録が、口ごとの的中率になる</span></div><div><b>配分を変える</b><span>つまみを回すと、明日 出るものが変わる。仕事を下げれば、家族と親友が上がる</span></div></div>
+          <p class="sm">指示はしない。出して、選ばせるだけ。意志力も管理力も問わない。</p>
+        </div>
+        <div class="lps">
+          <div class="num">06</div>
+          <h2>10年のノートが証明していること</h2>
+          <p>「買える・作れる・決められるもの」は全部 実現した。IPO・家・運転手・船。「日々の自分を変える系」は、<b>仕組み化した瞬間だけ</b> 実現した — 9年書き続けた 65kg級の体は、大会・コーチ・計量記録を入れた年に到達した。</p>
+          <p>だから Lask は、止まっている夢に「頑張れ」を付けない。<b>仕組み（AI・外注・人）</b>を付ける。</p>
+        </div>
+        <div class="lps dark">
+          <div class="num">07</div>
+          <h2>ランサーズと、地続き</h2>
+          <p>「外注」の先にいるのは、ランサーズに集う AI ワークフォース。Lask が発生させたタスクのうち、あなたがやらないものが、そのまま<b>仕事の発生源</b>になる。個人の 80% と、ランサーズの供給が、同じ画面でつながる。</p>
+        </div>
+        <div class="lps">
+          <div class="lpq big">「人間が思いついてこれは絶対にタスクだと思うことは、本当のタスクの一部でしかない。<br><br>そういったものを管理し、アイデアを思い出させ、自動的に発生させ、<b>人生そのものを豊かにする</b>究極のタスク管理サービスを作りたい。」<small>— 2026-09-04</small></div>
+          <button class="big" onclick="tab('home')">☀︎ 今日の画面を見る</button>
+        </div>
+      </div>
+    </section>
+
   </div>
 
 <nav class="tabs">
@@ -548,6 +680,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
     <button data-tab="ppl" onclick="tab('ppl')"><i>◎</i>人</button>
     <button data-tab="bal" onclick="tab('bal')"><i>◔</i>配分</button>
     <button data-tab="log" onclick="tab('log')"><i>🔁</i>自動<span class="dot">3</span></button>
+    <button data-tab="about" onclick="tab('about')"><i>◆</i>Laskとは</button>
   </nav>
   <div class="toast" id="toast"></div>
 </div>
@@ -558,7 +691,7 @@ let cur='home', prev='home';
 function show(id){ $$('.page').forEach(p=>p.classList.toggle('on',p.id===id)); $('#view').scrollTop=0; prev=cur; cur=id; }
 function tab(id){ show(id); $$('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===id)); }
 function go(id){ show(id); }
-function back(){ const t=['home','tree','ppl','bal','log'].includes(prev)?prev:'home'; tab(t); }
+function back(){ const t=['home','tree','ppl','bal','log','about'].includes(prev)?prev:'home'; tab(t); }
 function doneRow(el,e){ if(e.target.classList.contains('cb')){ el.classList.toggle('done'); el.querySelector('.cb').textContent=el.classList.contains('done')?'✓':''; toast(el.classList.contains('done')?'終わった。次に起きることは Lask が動かします':'戻しました'); } else go(el.dataset.go); }
 let tm; function toast(s){ const t=$('#toast'); t.textContent=s; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(()=>t.classList.remove('on'),2600); }
 function kill(b){ const li=b.closest('.li'); li.style.transition='.25s'; li.style.opacity=0; li.style.transform='translateX(30px)'; setTimeout(()=>li.remove(),260); toast('消しました。この口の的中率に反映します'); }
@@ -568,6 +701,19 @@ function hire(b,n){ $$('.cand .c').forEach(c=>c.classList.remove('picked')); b.c
 function assign(e,el,k){ e.stopPropagation(); const box=el.parentNode; box.querySelectorAll('span').forEach(x=>x.classList.remove('rec')); el.classList.add('rec'); const t=el.closest('.li').querySelector('.t').textContent; const m={me:'✍︎ 今日の「あなたがやる」に入れます',ai:'🤖 AI が始めました。進捗は「自動」で動きます',out:'🤝 ランサーズの候補 3名を Lask が絞ります → 承認待ちに上がります',ppl:'👤 近い人を探して、聞く一言を下書きします'}[k]; toast(m); if(k!=='me') setTimeout(()=>tab('log'),1400); }
 function fin(s){ toast(s); setTimeout(()=>tab('log'),1300); }
 
+/* dreams */
+const DREAMS={
+ work:[['時価総額 1,000億（2030）','2017「2020に」→ 13年スライド・降ろしていない','stop'],['東証プライム（2030.12）','子タスク 0・線が切れている','stop'],['AI Workforce 10万人の場','面談済 1万人 → 2年で 10万人・今日 動く','run'],['来期 EBITDA 10億','3月末 M&A が最大の分岐','run'],['M&A','毎年 計画・毎年 実行','run'],['Lask を世に出す','企画 17節・モック v3','run'],['経営AI／秋好OS','命題 48本・Railway 本番','run'],['IR・株価','2025 +31%','run'],['Plaud タイアップ','9月に売上計上したい','run'],['らんさ〜ず／秋好コンサル','火木 16:00 公開','run'],['所有物OS／家計OS','週次レポート','run'],['今期業績','1.8〜2.1億 見込','run']],
+ home:[['結衣とスイス','受験（2027春）が終わったら・子タスク 0','stop'],['墓参り（大坪家・秋好家）','毎年・2025 は行けた','keep'],['両親に会う（高槻）','30日・10月に','run'],['両親に料理を振る舞う','道具は揃った','run'],['キーちゃん','高槻の実家','keep'],['シャケちゃんとの思い出','思い出ボット 再設計中','run']],
+ hobby:[['船：港を巡って暮らす','伊東 30km 圏外・究極のキャンプ・毎週','run'],['釣り','先生を船に呼べない → 頼む','stop'],['PPL（自家用操縦士）','9/7 初出・船と同じ形','stop'],['別荘','降ろしたのに戻ってきた','stop'],['シーシャ基地（ベランダ）','炭・ラック・網戸','run'],['料理・キッチン道具','真空パック機・低温調理器・包丁','run'],['服・ガジェット','「買って生活の解像度を上げる」1つの熱','run'],['DJ','','keep'],['南極','AI が 3案 調べ終えている','stop']],
+ health:[['65kg級の体を一生維持','体脂肪 4〜5%・9年書いて 2026 到達','keep'],['前橋 大会','週5 継続中','run'],['睡眠をしっかり','早く寝る・酒を控える','keep'],['週5 筋トレ','月〜金 自主ト＋土 体幹','run']],
+ dream:[['海外に住む（2033）','2023「45〜50才で」→ 未着手','stop'],['英語','9年連続 目標 → 9年連続 未達','stop'],['チェロ','400日・優先度を下げた','stop'],['宇宙に行く','完了型・死ぬときに語ること','keep'],['Die with 0','2024 宣言 → 即実行','run'],['人格ごと OS 化（秋好OS）','2026 始動','run'],['かっこよく生きる','憲法・大','keep'],['誠実・公平','憲法・大','keep'],['死ぬときに後悔しない','憲法・大','keep'],['感謝','憲法・大・一番上','keep']],
+ cand:[['朝、何もしない時間','「幸せ」と言った 3回すべて','cand'],['別荘（戻ってきた）','9/3 降ろす → 9/7 再燃','cand'],['10年ノートを 1本に','らんさ〜ずの視聴者が一番見たいもの','cand'],['作った料理を人に振る舞う','出す相手だけが出てこない','cand']]};
+const ANAME={work:'仕事',home:'家庭',hobby:'趣味',health:'体',dream:'人生',cand:'候補'};
+const SNAME={run:'動いている',stop:'止まっている',keep:'維持型',cand:'候補'};
+function filterDream(a){ $$('#dgrid .tile').forEach(t=>{t.classList.toggle('sel',t.dataset.area===a);t.classList.toggle('dim',!!a&&t.dataset.area!==a)}); const box=$('#dlist'); if(!a){box.classList.add('gone');return} box.classList.remove('gone'); $('#dlistTitle').textContent=ANAME[a]+'　'+DREAMS[a].length+'件'; $('#dlistBody').innerHTML=DREAMS[a].map(([t,m,st])=>`<div class="dl" onclick="toast('${t}：${m||SNAME[st]}')"><div><div class="t">${t}</div>${m?`<div class="m">${m}</div>`:''}</div><span class="st ${st}">${SNAME[st]}</span></div>`).join(''); box.scrollIntoView({behavior:'smooth',block:'start'}); }
+/* knobs */
+function knob(){ const v={}; $$('#knobs input').forEach(i=>{v[i.dataset.k]=+i.value; $('#kv-'+i.dataset.k).textContent=i.value}); const sum=Object.values(v).reduce((a,b)=>a+b,0)||1; const n={}; let tot=0; for(const k in v){n[k]=Math.round(16*v[k]/sum); tot+=n[k]} const lo=[],hi=[]; if(v.work<7) hi.push('仕事の '+(7-v.work)+'本を AI・外注へ'); if(v.home>2) lo.push('家族・親友に '+(v.home-2)+'件'); if(v.hobby>3) lo.push('趣味に '+(v.hobby-3)+'件'); if(v.dream>2) lo.push('人生（南極・海外・チェロ）に '+(v.dream-2)+'件'); $('#knobNote').innerHTML='明日 発生する '+tot+'件の内訳：仕事 '+n.work+'・家庭 '+n.home+'・趣味 '+n.hobby+'・体 '+n.health+'・人生 '+n.dream+'。'+(hi.length||lo.length?'<b>'+[...hi,...lo].join('／')+'</b>。':'')+'あなたの手に残るのは 2つ。'; }
 /* live counters */
 let p1=71, s1=252, y1=42, p2=18, s2=64, y2=9, ai=12480, qa=11, tick=0;
 const f=s=>Math.floor(s/60)+'分'+String(s%60).padStart(2,'0')+'秒';

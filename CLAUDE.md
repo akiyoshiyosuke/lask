@@ -22,7 +22,7 @@ docs/ログ.md        企画書に無い本人発言と決定（憲法の層な�
 docs/10-新環境セットアップ.md  別マシン・別Claudeから入る時の手順書（clone/pull/ブランチ/push/認証）
 ui/lask-home.html   本体モック。5タブ＋詳細ページ。単一HTML・外部依存なし
 ui/lask-25.html     25歳が使った場合の版（機構は同じ、木の頂点が「なりたい状態」）
-ui/lask-board-demo.html  取締役会向けデモ（2026-09-15）。全部ダミー・スマホ幅専用・AI/ランサーズ/社内への委任を前面に。渡し終わったら消す
+ui/lask-board-demo.html  取締役会向けデモ（2026-09-15）。実データ・スマホ幅専用・6タブ（今日/夢/人/配分/自動/Laskとは）。「Laskとは」LP は恒久（本人指示 9/14）。デモ本体を消す時も LP は残す
 scripts/shot.mjs    スクショ生成（Playwright）
 ```
 - 本体を直すときは `ui/lask-home.html` だけ。`lask-25.html` には波及させない
