@@ -6,6 +6,14 @@
 
 - 正本はこのフォルダの `docs/`。Notion（https://www.notion.so/3d1380f385cf81e5bfbddbd82f7764f5 ）は 2026-09-08 までの内容。Notion に書ける環境なら同じ内容を反映する
 
+## セッションの型（毎回・省略しない）
+
+1. **始める前**: `git switch main && git pull --rebase` → `git switch -c feat/<やること>`（docs だけなら `docs/<やること>`）
+2. 作業
+3. **終わったら**: `git add <ファイル名明示>` → commit → `git push -u origin <branch>`。未 push を残して終わらない
+- Cowork の VM はセッションごとに変わるので、`git pull` が鍵エラーになったら `bash scripts/setup.sh` を叩き直す（`core.sshCommand` の絶対パスを今のセッションに直す）＋ `ssh-keyscan github.com >> ~/.ssh/known_hosts`
+- 接続フォルダ名は Unicode 正規化の違いで `cd "$HOME/mnt/究極の…"` が通らないことがある → `cd "$HOME"/mnt/*/` で入る
+
 ## 構成
 ```
 docs/企画書.md      企画書（思想・発生エンジン・原則・ビジネスモデル・UI変遷。§1〜§17）
@@ -13,6 +21,7 @@ docs/ログ.md        企画書に無い本人発言と決定（憲法の層な�
 docs/10-新環境セットアップ.md  別マシン・別Claudeから入る時の手順書（clone/pull/ブランチ/push/認証）
 ui/lask-home.html   本体モック。5タブ＋詳細ページ。単一HTML・外部依存なし
 ui/lask-25.html     25歳が使った場合の版（機構は同じ、木の頂点が「なりたい状態」）
+ui/lask-board-demo.html  取締役会向けデモ（2026-09-15）。全部ダミー・スマホ幅専用・AI/ランサーズ/社内への委任を前面に。渡し終わったら消す
 scripts/shot.mjs    スクショ生成（Playwright）
 ```
 - 本体を直すときは `ui/lask-home.html` だけ。`lask-25.html` には波及させない

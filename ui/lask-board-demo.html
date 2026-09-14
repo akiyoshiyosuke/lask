@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Lask — 9/15 朝（デモ）</title>
+<style>
+:root{
+  --bg:#e9e8e3;--paper:#fffefb;--ink:#141311;--ink2:#3d3a34;--mute:#8b877d;--line:#e8e5dd;--soft:#f6f4ee;
+  --work:#2f5d92;--home:#b0402b;--dream:#67399c;--hobby:#1c7355;--health:#b8740f;
+  --ai:#1c7355;--ask:#95591f;--gone:#a5a199;--lan:#2b5ab5;
+  --r:16px;--sh:0 1px 2px rgba(20,19,17,.05),0 1px 1px rgba(20,19,17,.03);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1;overscroll-behavior:none}
+.app{max-width:480px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top) + 12px) 18px 8px;flex:none}
+.brand{font-weight:800;font-size:20px;letter-spacing:-.02em;line-height:1}
+.brand small{display:block;font-weight:500;font-size:10.5px;color:var(--mute);letter-spacing:.06em;margin-top:4px}
+.talk{border:0;background:var(--ink);color:#fff;border-radius:18px;height:34px;padding:0 14px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(20,19,17,.2)}
+.view{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 14px 30px;-webkit-overflow-scrolling:touch}
+.page{display:none;animation:in .18s ease}
+.page.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.tabhint{font-size:11px;color:var(--mute);text-align:center;padding:2px 10px 6px;line-height:1.5}
+
+/* bottom tabs */
+.tabs{display:flex;flex:none;background:var(--paper);border-top:1px solid var(--line);padding:6px 6px calc(env(safe-area-inset-bottom) + 6px)}
+.tabs button{flex:1;border:0;background:transparent;padding:6px 0 2px;font-size:10.5px;color:#8d8980;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+.tabs button i{font-style:normal;font-size:19px;line-height:1}
+.tabs button.on{color:var(--ink)}
+.tabs button .dot{position:absolute;top:2px;right:calc(50% - 18px);min-width:16px;height:16px;border-radius:8px;background:var(--home);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:22px 4px 8px}
+.sec h4{margin:0;font-size:11px;letter-spacing:.13em;font-weight:700;color:var(--mute)}
+.sec span{font-size:11px;color:var(--mute)}
+
+.hero{padding:8px 4px 4px}
+.hero .day{font-size:11.5px;color:var(--mute);letter-spacing:.09em}
+.hero .day b{font-weight:600;color:var(--ink2)}
+.hero h1{font-size:24px;line-height:1.45;font-weight:700;letter-spacing:-.02em;margin:12px 0 10px}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f2e2b8 62%);padding:0 2px}
+.hero p{font-size:14px;line-height:1.85;color:var(--ink2);margin:0 0 14px}
+.hero p b{font-weight:600;color:var(--ink)}
+.heroact{display:flex;gap:8px}
+.heroact button{flex:1;border:1px solid var(--line);background:var(--paper);padding:13px;border-radius:13px;font-size:14px;font-weight:600;box-shadow:var(--sh);color:var(--ink)}
+.heroact button.y{background:var(--ink);color:#fff;border-color:var(--ink)}
+.src{font-size:11px;color:var(--mute);line-height:1.6;margin:9px 4px 0}
+
+.mine{background:var(--ink);border-radius:var(--r);padding:13px 13px 6px;color:#fff;box-shadow:0 8px 24px -14px rgba(20,19,17,.6)}
+.row{display:grid;grid-template-columns:23px 1fr 14px;gap:11px;padding:13px 2px;border-top:1px solid #322f2a;align-items:start}
+.row:first-child{border-top:0}
+.cb{width:22px;height:22px;border-radius:7px;border:1.6px solid #6d6759;margin-top:1px;display:grid;place-items:center;font-size:13px;color:#fff}
+.row.done .cb{background:#fff;color:var(--ink);border-color:#fff}
+.row.done .t{text-decoration:line-through;opacity:.5}
+.row .t{font-size:15.5px;line-height:1.5;font-weight:600;letter-spacing:-.01em}
+.row .m{font-size:11.5px;color:#b3ada0;margin-top:4px;line-height:1.6}
+.row .m b{color:#fff;font-weight:600}
+.row .ar{color:#6d6759;font-size:15px;align-self:center}
+.mine .why{font-size:11px;color:#8f8a7e;padding:9px 2px 6px;border-top:1px solid #322f2a;margin-top:4px;line-height:1.6}
+
+.card{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--line);overflow:hidden}
+.li{display:grid;grid-template-columns:auto 1fr auto;gap:11px;padding:13px 14px;border-top:1px solid var(--line);align-items:start}
+.li:first-child{border-top:0}
+.li .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:14px;background:var(--soft);color:var(--ink2);font-weight:700}
+.li .t{font-size:14.5px;line-height:1.5;font-weight:600}
+.li .m{font-size:11.5px;color:var(--mute);margin-top:3px;line-height:1.6}
+.li .m b{color:var(--ink2);font-weight:600}
+.li .ar{color:#c4c0b6;font-size:16px;align-self:center}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;letter-spacing:.04em;vertical-align:1px;margin-right:4px}
+.tag.work{background:#e3ebf5;color:var(--work)}.tag.home{background:#f6e3df;color:var(--home)}.tag.dream{background:#ece3f5;color:var(--dream)}
+.tag.hobby{background:#dff0e8;color:var(--hobby)}.tag.health{background:#f7ecd8;color:var(--health)}
+.tag.ai{background:#dff0e8;color:var(--ai)}.tag.lan{background:#e0e8fa;color:var(--lan)}.tag.ppl{background:#f1ede4;color:var(--ask)}
+.lask{border:1.5px dashed #cfcabd;background:transparent}
+.lask .li{border-top:1px dashed #d9d5ca}
+.li .acts{display:flex;gap:6px;margin-top:9px}
+.li .acts button{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:7px 11px;font-size:12px;font-weight:600;color:var(--ink2)}
+.li .acts button.p{background:var(--ink);color:#fff;border-color:var(--ink)}
+.li .acts button.lan{border-color:#b9c8ef;color:var(--lan);background:#f2f5fd}
+
+.pulse{width:8px;height:8px;border-radius:50%;background:#d9463b;display:inline-block;margin-right:6px;animation:pl 1.2s infinite}
+@keyframes pl{0%,100%{box-shadow:0 0 0 0 rgba(217,70,59,.5)}60%{box-shadow:0 0 0 6px rgba(217,70,59,0)}}
+.prog{height:5px;background:#ecebe5;border-radius:3px;margin-top:8px;overflow:hidden;position:relative}
+.prog i{display:block;height:100%;background:var(--ai);border-radius:3px;position:relative;overflow:hidden}
+.prog i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:sh 1.6s infinite}
+@keyframes sh{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.prog i.lan{background:var(--lan)}
+.yen{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kpi .card{padding:13px 14px}
+.kpi .n{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.kpi .n small{font-size:13px;font-weight:600;color:var(--mute);margin-left:2px}
+.kpi .l{font-size:11px;color:var(--mute);margin-top:6px;line-height:1.5}
+
+.bars{padding:6px 14px 12px}
+.bar2{display:grid;grid-template-columns:44px 1fr 46px;gap:10px;align-items:center;padding:8px 0;font-size:12.5px}
+.bar2 .tr{height:9px;background:#ecebe5;border-radius:5px;overflow:hidden}
+.bar2 .tr i{display:block;height:100%;border-radius:5px}
+.bar2 .v{text-align:right;color:var(--mute);font-variant-numeric:tabular-nums}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 13px 11px;box-shadow:var(--sh);position:relative}
+.tile .n{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.tile .l{font-size:12px;font-weight:600;margin-top:2px}
+.tile .s{font-size:10.5px;color:var(--mute);margin-top:4px}
+.tile .rd{position:absolute;top:10px;right:10px;min-width:18px;height:18px;border-radius:9px;background:var(--home);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+
+.back{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--mute);font-size:13px;font-weight:600;padding:10px 2px}
+.dt h2{font-size:21px;line-height:1.45;margin:4px 4px 6px;letter-spacing:-.02em}
+.dt .sub{font-size:12.5px;color:var(--mute);margin:0 4px 14px;line-height:1.6}
+.who{display:grid;gap:8px}
+.who button{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:13px 14px;box-shadow:var(--sh);color:var(--ink)}
+.who button .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;font-weight:700}
+.who button .t{font-size:14.5px;font-weight:700}
+.who button .m{font-size:11.5px;color:var(--mute);margin-top:2px;line-height:1.5}
+.who button .pr{font-size:13px;font-weight:700;color:var(--ink2);white-space:nowrap}
+.who button.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.ic.ai{background:#dff0e8;color:var(--ai)}.ic.lan{background:#e0e8fa;color:var(--lan)}.ic.me{background:var(--ink);color:#fff}.ic.ppl{background:#f1ede4;color:var(--ask)}
+.cand{display:grid;gap:8px;margin-top:8px}
+.cand .c{display:grid;grid-template-columns:38px 1fr auto;gap:11px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:11px 13px}
+.cand .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px}
+.cand .t{font-size:14px;font-weight:700}
+.cand .m{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.5}
+.cand button{border:0;background:var(--lan);color:#fff;border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:700}
+.cand .c.picked button{background:var(--ai)}
+.note{font-size:12px;color:var(--ink2);line-height:1.75;background:var(--soft);border-radius:12px;padding:11px 13px;margin-top:10px}
+.note b{font-weight:700}
+.big{width:100%;border:0;background:var(--ink);color:#fff;border-radius:14px;padding:15px;font-size:15px;font-weight:700;margin-top:14px;box-shadow:0 6px 18px -10px rgba(20,19,17,.6)}
+.big.lan{background:var(--lan)}
+.big:disabled{opacity:.45}
+.chain{margin:6px 4px}
+.chain .st{display:grid;grid-template-columns:18px 1fr;gap:12px;padding:0 0 16px;position:relative}
+.chain .st::before{content:"";position:absolute;left:8px;top:18px;bottom:0;width:2px;background:#d9d5ca}
+.chain .st:last-child::before{display:none}
+.chain .st i{width:18px;height:18px;border-radius:50%;background:var(--paper);border:2px solid #cfcabd;display:block}
+.chain .st.hot i{border-color:var(--ink);background:var(--ink)}
+.chain .st.cut i{border-color:var(--home);border-style:dashed}
+.chain .t{font-size:14px;font-weight:600;line-height:1.4}
+.chain .m{font-size:11.5px;color:var(--mute);margin-top:2px}
+.chain .cut .m{color:var(--home);font-weight:600}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 84px);transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;max-width:88vw;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);z-index:9;line-height:1.5}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.gone{display:none!important}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl td{padding:11px 12px;border-top:1px solid var(--line);vertical-align:top;line-height:1.55}
+.tbl tr:first-child td{border-top:0}
+.tbl td:first-child{color:var(--mute);white-space:nowrap;font-size:11.5px;width:74px}
+.tbl b{font-weight:700}
+.demo{position:fixed;top:calc(env(safe-area-inset-top) + 14px);right:14px;font-size:9.5px;letter-spacing:.12em;color:var(--mute);border:1px solid #cfcabd;border-radius:6px;padding:2px 6px;background:rgba(255,254,251,.8);pointer-events:none;z-index:5}
+.fade{opacity:.45}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="bar">
+    <div class="brand">Lask<small><span id="clock">9/15 火 7:02</span> · DEMO／ダミーデータ</small></div>
+    <button class="talk" onclick="toast('🎙 話しかける：「合宿の写真、誰かに頼んどいて」→ Lask が拾って発生させます')">🎙 話す</button>
+  </div>
+  
+  <div class="view" id="view">
+
+    <!-- ================= 今日 ================= -->
+    <section class="page on" id="home">
+      <div class="tabhint">入力ゼロ。今日やるのは 2つだけ。残りは AI と人が動かしている</div>
+      <div class="hero">
+        <div class="day"><b>9/15（火）</b>　取締役会 10:00　／　自由 3.5h</div>
+        <h1>今日は、10:00の取締役会で<em>新規事業のGOを取る</em>。それだけで勝ち。</h1>
+        <p>資料は昨夜 AI が最終稿にした。数字の裏取りは<b>ランサーズの佐藤さん</b>（財務モデル）が 23:40 に納品済み。あなたが見るのは <b>3ページ目の1行</b>だけ。</p>
+        <div class="heroact">
+          <button class="y" onclick="toast('わかった。今日はこの一言だけ覚えていれば OK')">わかった</button>
+          <button onclick="toast('違う → 理由を1語だけ聞いて、明日の一言に反映します')">違う</button>
+        </div>
+        <div class="src">根拠：カレンダー「取締役会」／Slack #新規事業 の昨夜の流れ／夢「AIプロダクトを出す」の線上にある唯一の予定</div>
+      </div>
+
+      <div class="sec"><h4>✍︎ 今日あなたがやる</h4><span>代わりがいないものだけ・上限2</span></div>
+      <div class="mine">
+        <div class="row" onclick="doneRow(this,event)" data-go="t1">
+          <div class="cb"></div>
+          <div><div class="t">取締役会：新規AIプロダクトの投資枠を決める</div>
+            <div class="m"><span class="tag work">仕事</span>効く先 → <b>2030 東証プライム</b>／資料は整っている・決めるだけ</div></div>
+          <div class="ar">›</div>
+        </div>
+        <div class="row" onclick="doneRow(this,event)" data-go="t2">
+          <div class="cb"></div>
+          <div><div class="t">母に電話（3分・聞くことは3つ）</div>
+            <div class="m"><span class="tag home">家庭</span>効く先 → <b>秋の帰省</b>／聞いた後は Lask が新幹線・宿を自動で押さえる</div></div>
+          <div class="ar">›</div>
+        </div>
+        <div class="why">上限2の理由：18:30 会食までの自由が 3.5h。3つ目を入れると「考える時間」が消える</div>
+      </div>
+
+      <div class="sec"><h4>◎ Lask が立てた</h4><span>点線＝勝手に立てた・1タップで消せる</span></div>
+      <div class="card lask">
+        <div class="li">
+          <div class="ic">◎</div>
+          <div><div class="t">取締役会の後、5分だけ 社長室に「決まったこと」を口頭で</div>
+            <div class="m"><span class="tag work">仕事</span>口：会議の後の空白／効く：翌日の稟議が 2日 早くなる（過去12回の実績）</div>
+            <div class="acts"><button class="p" onclick="toast('入れました。11:05 に 1行で通知します')">やる</button><button onclick="kill(this)">違う</button></div></div>
+        </div>
+        <div class="li">
+          <div class="ic">◎</div>
+          <div><div class="t">10月の船：整備の予約を入れる（窓が閉じるまで 6日）</div>
+            <div class="m"><span class="tag hobby">趣味</span>口：リードタイム（整備は 3週間前）／これを逃すと 11月まで乗れない</div>
+            <div class="acts"><button class="lan" onclick="go('t3')">🤝 誰かに頼む ›</button><button onclick="kill(this)">違う</button></div></div>
+        </div>
+        <div class="li">
+          <div class="ic">◎</div>
+          <div><div class="t">チェロ：400日止まっている。先月会食した田村さんの娘さんがチェリスト</div>
+            <div class="m"><span class="tag dream">夢</span>口：人の橋渡し／答えは「調べる」ではなく「聞いてみる」</div>
+            <div class="acts"><button class="p" onclick="toast('田村さんへの一言を下書きしました。送るのはあなたです')">聞いてみる</button><button onclick="kill(this)">もういい</button></div></div>
+        </div>
+      </div>
+
+      <div class="sec"><h4>🔁 あなた抜きで動いている</h4><span id="cntRun">7件 → 自動タブ</span></div>
+      <div class="card" onclick="tab('log')">
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div>
+          <div><div class="t">取締役会資料：Q&A 想定 20問を作成中</div><div class="m"><span class="pulse"></span><span id="p1">71%</span>・<span id="t1s">4分12秒</span>・<span class="yen" id="y1">¥42</span></div></div><div class="ar">›</div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">🤝</div>
+          <div><div class="t">ランサーズ：会社紹介 動画の編集（山本 M. さん）</div><div class="m">納品予定 9/17・見積 ¥68,000（承認済）・進捗 40%</div></div><div class="ar">›</div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div>
+          <div><div class="t">社長室 佐々木：合宿カメラマン 3社に見積依頼</div><div class="m">返事 1/3・期限 明日朝。無ければ <b>ランサーズ募集に切替</b></div></div><div class="ar">›</div></div>
+      </div>
+
+      <div class="sec"><h4>❓ あなたを待っている</h4><span>承認 1・返事 2</span></div>
+      <div class="card">
+        <div class="li"><div class="ic" style="background:#f7ecd8;color:var(--health)">¥</div>
+          <div><div class="t">LP 制作の見積 ¥120,000（ランサーズ・3名から選定済）</div><div class="m">Lask 推薦：<b>高橋 R.</b>（同業 LP 実績 14件・納期 5日）</div>
+            <div class="acts"><button class="p" onclick="approve(this)">承認して発注</button><button onclick="go('t3')">候補を見る</button></div></div>
+        </div>
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div>
+          <div><div class="t">「南極」3案のうち、どれを深掘りしますか</div><div class="m">A 12月 クルーズ 18日／B 1月 フライ＆クルーズ 9日／C 2027 に見送り</div>
+            <div class="acts"><button onclick="toast('B を深掘りします。今夜までに費用・日程・同行者候補を出します')">B</button><button onclick="toast('来年に回しました。1/10 に思い出させます')">来年</button></div></div>
+        </div>
+      </div>
+
+      <div class="sec"><h4>◔ 今日の自由</h4><span>先月 戻った 106h</span></div>
+      <div class="kpi">
+        <div class="card"><div class="n">3.5<small>h</small></div><div class="l">今日 空いている時間<br>18:30 会食まで</div></div>
+        <div class="card"><div class="n">106<small>h/月</small></div><div class="l">AI と人が肩代わりして戻った時間<br>使い先：船 4h・親 0h・夢 0h</div></div>
+      </div>
+
+      <div class="sec"><h4>✓ 昨日終わった</h4><span>9件（あなたは 2件）</span></div>
+      <div class="card fade">
+        <div class="li"><div class="ic">✓</div><div><div class="t">取締役会資料 v7 → 最終稿</div><div class="m">AI 4件・ランサーズ 佐藤さん 1件（財務モデル）・あなた 1件（1行直した）</div></div></div>
+        <div class="li"><div class="ic">✓</div><div><div class="t">社内 Q&A 42件に一次回答</div><div class="m">AI・あなたが見たのは 3件</div></div></div>
+        <div class="li"><div class="ic">✓</div><div><div class="t">ジム 60分（脚）</div><div class="m">あなた・体は回っている</div></div></div>
+      </div>
+    </section>
+
+    <!-- ================= 夢 ================= -->
+    <section class="page" id="tree">
+      <div class="tabhint">今日と10年が一本の木。止まっている所を赤で出す</div>
+      <div class="sec"><h4>領域</h4><span>大きい数＝件数・赤丸＝止まっている</span></div>
+      <div class="grid">
+        <div class="tile" onclick="go('d1')"><div class="rd">2</div><div class="n" style="color:var(--work)">12</div><div class="l">仕事</div><div class="s">東証プライム・AIプロダクト…</div></div>
+        <div class="tile" onclick="toast('家庭 6件（止まり 1）')"><div class="rd">1</div><div class="n" style="color:var(--home)">6</div><div class="l">家庭</div><div class="s">帰省・子どもの受験…</div></div>
+        <div class="tile" onclick="toast('趣味 9件（止まり 3）')"><div class="rd">3</div><div class="n" style="color:var(--hobby)">9</div><div class="l">趣味</div><div class="s">船・釣り・狩猟免許…</div></div>
+        <div class="tile" onclick="toast('体 4件・止まり 0')"><div class="n" style="color:var(--health)">4</div><div class="l">体</div><div class="s">大会・体脂肪…</div></div>
+        <div class="tile" onclick="toast('人生 10件（止まり 3）')"><div class="rd">3</div><div class="n" style="color:var(--dream)">10</div><div class="l">人生</div><div class="s">南極・チェロ・海外に住む…</div></div>
+        <div class="tile" onclick="toast('候補 4件：Lask が拾ったが まだ夢と決めていないもの')"><div class="n" style="color:var(--mute)">4</div><div class="l">候補</div><div class="s">口にしたが決めていない</div></div>
+      </div>
+
+      <div class="sec"><h4>◎ 止まっている</h4><span>詰めない。興味だけ聞く</span></div>
+      <div class="card lask">
+        <div class="li" onclick="go('d1')"><div class="ic">◎</div><div><div class="t">新規 AI プロダクトを出す</div><div class="m"><span class="tag work">仕事</span>子タスク 3・今日の取締役会で <b>線がつながる</b></div></div><div class="ar">›</div></div>
+        <div class="li"><div class="ic">◎</div><div><div class="t">狩猟免許</div><div class="m"><span class="tag hobby">趣味</span>210日・「行ける人いるよ」と言った社員が 2人いる</div>
+          <div class="acts"><button class="p" onclick="toast('社員 2人に「今度 話を聞かせて」を下書きしました')">ある</button><button onclick="toast('一手は Lask が探します：猟友会の講習 10/4（ランサーズで同行者も募集できます）')">一手が浮かばない</button><button onclick="kill(this)">もういい</button></div></div></div>
+        <div class="li"><div class="ic">◎</div><div><div class="t">海外に住む（2033）</div><div class="m"><span class="tag dream">人生</span>子タスク 0・線が切れている</div>
+          <div class="acts"><button class="p" onclick="toast('AI が候補地 5つを 1週間かけて調べます（¥400）')">🤖 AI に調べさせる</button><button onclick="kill(this)">もういい</button></div></div></div>
+      </div>
+    </section>
+
+    <!-- ================= 人 ================= -->
+    <section class="page" id="ppl">
+      <div class="tabhint">人はタスクと対等。誰と会うと、何が動くか</div>
+      <div class="sec"><h4>◎ 会うと、動くもの</h4><span>毎朝 組み替わる</span></div>
+      <div class="card"><table class="tbl">
+        <tr><td>今日 10:00</td><td><b>取締役 4名</b><br>動く：<b>新規 AI プロダクト</b>（この 4人が揃うのは今月ここだけ）</td></tr>
+        <tr><td>9/19・4日後</td><td><b>田村さん</b>（会食）<br>動く：<b>チェロ</b>（娘さんがチェリスト・400日ぶりに動く）</td></tr>
+        <tr><td>1年4ヶ月ぶり</td><td><b>大西さん</b>（前職の上司）<br>動く：<b>海外に住む</b>（本人が 2年前に移住・聞くだけで一手が出る）</td></tr>
+        <tr><td>10月第2週</td><td><b>社内の釣りの人</b><br>動く：<b>釣り</b>・90日で唯一の空白。入れられるのは 1つだけ</td></tr>
+      </table></div>
+
+      <div class="sec"><h4>🤝 ランサーズで つながった人</h4><span>Lask 経由・今月 4人</span></div>
+      <div class="card">
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">佐藤 K.（財務モデル）</div><div class="m">取締役会資料の裏取り・2回目・★4.9／<b>次回も指名</b> を Lask が提案</div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">山本 M.（動画編集）</div><div class="m">会社紹介 動画・進行中 40%</div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">高橋 R.（LP 制作）</div><div class="m">承認待ち・同業 14件</div></div></div>
+      </div>
+
+      <div class="sec"><h4>会っていない</h4><span>閾値は人ごと に学習</span></div>
+      <div class="card">
+        <div class="li"><div class="ic">◯</div><div><div class="t">親友 A</div><div class="m">7週（普段は 6週）・10月の空白に 1つだけ入る</div><div class="acts"><button class="p" onclick="toast('10/8 夜で 打診の一言を下書きしました')">誘う</button></div></div></div>
+        <div class="li"><div class="ic">◯</div><div><div class="t">両親</div><div class="m">今日 電話（✍︎ 今日の 2つ目）</div></div></div>
+      </div>
+    </section>
+
+    <!-- ================= 配分 ================= -->
+    <section class="page" id="bal">
+      <div class="tabhint">操作は 2つだけ：「止める」と「配分を変える」</div>
+      <div class="sec"><h4>今月の配分</h4><span>あなたの時間・実績</span></div>
+      <div class="card bars">
+        <div class="bar2"><span style="color:var(--work);font-weight:700">仕事</span><div class="tr"><i style="width:68%;background:var(--work)"></i></div><span class="v">68%</span></div>
+        <div class="bar2"><span style="color:var(--home);font-weight:700">家庭</span><div class="tr"><i style="width:9%;background:var(--home)"></i></div><span class="v">9%</span></div>
+        <div class="bar2"><span style="color:var(--hobby);font-weight:700">趣味</span><div class="tr"><i style="width:8%;background:var(--hobby)"></i></div><span class="v">8%</span></div>
+        <div class="bar2"><span style="color:var(--health);font-weight:700">体</span><div class="tr"><i style="width:10%;background:var(--health)"></i></div><span class="v">10%</span></div>
+        <div class="bar2"><span style="color:var(--dream);font-weight:700">人生</span><div class="tr"><i style="width:5%;background:var(--dream)"></i></div><span class="v">5%</span></div>
+      </div>
+      <div class="note">先月 あなたが「家庭を増やす」とつまみを回した → Lask は 仕事の 7本を AI・ランサーズに移し、家庭に <b>+6h/月</b> 戻した。ただし「渡してはいけない権限」（人事・投資判断）には触れていない。</div>
+
+      <div class="sec"><h4>◎ 自由を増やす提案</h4><span>採用すると 来月から</span></div>
+      <div class="card lask">
+        <div class="li"><div class="ic">◎</div><div><div class="t">週次の業績進捗 7本のうち 3本を 書面報告に</div><div class="m">+2.5h/週・AI が要約、あなたは 3行だけ読む</div><div class="acts"><button class="p" onclick="toast('来週から。担当 3名に Lask が 1行で伝えます')">採用</button><button onclick="kill(this)">違う</button></div></div></div>
+        <div class="li"><div class="ic">◎</div><div><div class="t">採用面接の一次を ランサーズの元人事 2名に</div><div class="m">+3h/週・最終だけあなた・月 ¥40,000</div><div class="acts"><button class="lan" onclick="go('t3')">🤝 候補を見る ›</button><button onclick="kill(this)">違う</button></div></div></div>
+      </div>
+
+      <div class="sec"><h4>今月の支出（動いた分だけ）</h4><span>上限に近づいたら止めて聞く</span></div>
+      <div class="kpi">
+        <div class="card"><div class="n" id="mAI">¥12,480</div><div class="l">AI・今月<br>上限 ¥30,000</div></div>
+        <div class="card"><div class="n">¥188,000</div><div class="l">ランサーズ 発注・今月<br>3件・承認済のみ</div></div>
+      </div>
+    </section>
+
+    <!-- ================= 自動 ================= -->
+    <section class="page" id="log">
+      <div class="tabhint">あなた以外が進めているもの。ここが課金の明細でもある</div>
+      <div class="kpi" style="margin-top:8px">
+        <div class="card"><div class="n" id="mAI2">¥12,480</div><div class="l">AI 今月／上限 ¥30,000</div></div>
+        <div class="card"><div class="n">7<small>件</small></div><div class="l">いま動いている</div></div>
+      </div>
+
+      <div class="sec"><h4>🤖 AI が動かしている</h4><span>1秒ごとに動く</span></div>
+      <div class="card">
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">取締役会 Q&A 想定 20問</div><div class="m"><span class="pulse"></span><span id="p1b">71%</span>・<span id="t1b">4分12秒</span>・<span class="yen" id="y1b">¥42</span></div><div class="prog"><i id="bar1" style="width:71%"></i></div></div></div>
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">南極 B案：費用・日程・同行者候補</div><div class="m"><span class="pulse"></span><span id="p2">18%</span>・<span id="t2b">1分04秒</span>・<span class="yen" id="y2">¥9</span></div><div class="prog"><i id="bar2" style="width:18%"></i></div></div></div>
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">社内 Q&A 一次回答（常時）</div><div class="m">今日 <span id="qa">11</span>件・あなたに回したのは 1件</div></div></div>
+      </div>
+
+      <div class="sec"><h4>🤝 ランサーズの人が動かしている</h4><span>金額は承認した分だけ</span></div>
+      <div class="card">
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">会社紹介 動画の編集 — 山本 M.</div><div class="m">¥68,000・納品 9/17・進捗 40%</div><div class="prog"><i class="lan" style="width:40%"></i></div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">競合 12社の料金表 調査 — 鈴木 A.</div><div class="m">¥15,000・納品 今日 18:00・進捗 90%</div><div class="prog"><i class="lan" style="width:90%"></i></div></div></div>
+        <div class="li" id="lpRow"><div class="ic" style="background:#f7ecd8;color:var(--health)">¥</div><div><div class="t">LP 制作 — 高橋 R.（承認待ち）</div><div class="m">¥120,000・Lask 推薦・候補 3名から</div><div class="acts"><button class="p" onclick="approve(this)">承認して発注</button></div></div></div>
+      </div>
+
+      <div class="sec"><h4>👤 社内の人が動かしている</h4><span>追いかけるのは Lask</span></div>
+      <div class="card">
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">社長室 佐々木：合宿カメラマン 見積 3社</div><div class="m">返事 1/3・3日2時間・<b>明日朝までに無ければ ランサーズ募集に切替</b>（自動）</div></div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">経営企画 中村：新規事業 予算案 v2</div><div class="m">今日 9:30 まで・Lask が 8:30 に 1行リマインド</div></div></div>
+      </div>
+
+      <div class="sec"><h4>信頼の層</h4><span>消さない・順位を下げただけ</span></div>
+      <div class="card fade">
+        <div class="li"><div class="ic">3</div><div><div class="t">Lask がやっていないこと</div><div class="m">人事・投資判断・お金の最終承認・あなたの言葉での送信</div></div></div>
+        <div class="li"><div class="ic">5</div><div><div class="t">出さなかったもの 14件</div><div class="m">今日の 3つ に入らなかった候補と理由</div></div></div>
+        <div class="li"><div class="ic">7</div><div><div class="t">的中率 78%</div><div class="m">「違う」で消された率 22%・口ごとに学習中</div></div></div>
+      </div>
+    </section>
+
+    <!-- ================= 詳細 t1 ================= -->
+    <section class="page dt" id="t1">
+      <button class="back" onclick="back()">‹ 今日</button>
+      <h2>取締役会：新規 AI プロダクトの投資枠を決める</h2>
+      <div class="sub"><span class="tag work">仕事</span>✍︎ あなたが入れた（9/1 音声）／今日 10:00／代わりがいない</div>
+      <div class="sec"><h4>どこに効くか</h4><span>線</span></div>
+      <div class="chain">
+        <div class="st hot"><i></i><div><div class="t">今日：投資枠を決める</div><div class="m">これが無いと下の全部が止まる</div></div></div>
+        <div class="st"><i></i><div><div class="t">10月：プロトタイプ（ランサーズ + AI で 3週間）</div><div class="m">Lask が 発注案を作成済み・承認待ち</div></div></div>
+        <div class="st"><i></i><div><div class="t">2027：新規事業 売上 ○億</div><div class="m">中期計画</div></div></div>
+        <div class="st cut"><i></i><div><div class="t">2030：東証プライム</div><div class="m">線が切れている（子タスク 0）</div></div></div>
+      </div>
+      <div class="sec"><h4>Lask が整えたもの</h4><span>あなたは決めるだけ</span></div>
+      <div class="card">
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">資料 最終稿・想定 Q&A 20問</div><div class="m">¥310</div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">財務モデルの裏取り — 佐藤 K.</div><div class="m">¥30,000・昨夜 23:40 納品</div></div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">経営企画 中村：予算案 v2</div><div class="m">9:30 まで・Lask が追いかけている</div></div></div>
+      </div>
+      <div class="note">決まった後に自動で起きること：① 社長室に 1行共有 ② プロトタイプの発注案が「承認待ち」に上がる ③ 2030 の線に子タスクが 1本つながる</div>
+    </section>
+
+    <!-- ================= 詳細 t2 ================= -->
+    <section class="page dt" id="t2">
+      <button class="back" onclick="back()">‹ 今日</button>
+      <h2>母に電話（3分）</h2>
+      <div class="sub"><span class="tag home">家庭</span>◎ Lask が立てた／口：会っていない 30日／効く先：秋の帰省</div>
+      <div class="sec"><h4>聞くこと 3つ</h4><span>これだけ</span></div>
+      <div class="card">
+        <div class="li"><div class="ic">1</div><div><div class="t">11月の連休、家にいる？</div></div></div>
+        <div class="li"><div class="ic">2</div><div><div class="t">父の車、車検いつだった？</div><div class="m">前回の会話で「そろそろ」と言っていた</div></div></div>
+        <div class="li"><div class="ic">3</div><div><div class="t">食べたいもの ある？</div></div></div>
+      </div>
+      <div class="note">聞いた後に自動で起きること：新幹線と宿を AI が仮押さえ（承認 1回）／車検は ランサーズの整備士ネットワークで 近所の見積を 2件取る／「食べたいもの」は 帰省の買い物リストへ</div>
+    </section>
+
+    <!-- ================= 詳細 t3：誰がやるか ================= -->
+    <section class="page dt" id="t3">
+      <button class="back" onclick="back()">‹ 戻る</button>
+      <h2>船の整備を予約する</h2>
+      <div class="sub"><span class="tag hobby">趣味</span>◎ Lask が立てた／窓が閉じるまで 6日／あなたがやると 40分</div>
+      <div class="sec"><h4>誰がやるか</h4><span>タップで選ぶ</span></div>
+      <div class="who">
+        <button onclick="pick(this,'me')"><div class="ic me">✍︎</div><div><div class="t">自分でやる</div><div class="m">40分・今日の自由 3.5h から引く</div></div><div class="pr">0円</div></button>
+        <button onclick="pick(this,'ai')"><div class="ic ai">🤖</div><div><div class="t">AI に任せる</div><div class="m">マリーナに電話・空き 3枠を取ってくる・予約はあなたが 1タップ</div></div><div class="pr">¥300</div></button>
+        <button onclick="pick(this,'lan')"><div class="ic lan">🤝</div><div><div class="t">ランサーズの人に頼む</div><div class="m">整備の相見積・引き渡し立会いまで。船に詳しい人 3名</div></div><div class="pr">¥8,000〜</div></button>
+        <button onclick="pick(this,'ppl')"><div class="ic ppl">👤</div><div><div class="t">社内の人に頼む</div><div class="m">運転手 上田さん（前回も担当）・Lask が追いかける</div></div><div class="pr">0円</div></button>
+      </div>
+      <div id="candBox" class="gone">
+        <div class="sec"><h4>🤝 ランサーズの候補</h4><span>Lask が 3名に絞った</span></div>
+        <div class="cand">
+          <div class="c"><div class="av" style="background:#2b5ab5">T</div><div><div class="t">田中 S.</div><div class="m">ボート整備 12年・湘南〜東京湾・★5.0（31件）</div></div><button onclick="hire(this,'田中 S.')">頼む ¥9,000</button></div>
+          <div class="c"><div class="av" style="background:#1c7355">O</div><div><div class="t">岡田 Y.</div><div class="m">元マリーナ勤務・立会い可・★4.8（18件）</div></div><button onclick="hire(this,'岡田 Y.')">頼む ¥8,000</button></div>
+          <div class="c"><div class="av" style="background:#95591f">K</div><div><div class="t">木村 H.</div><div class="m">整備士資格・見積比較が得意・★4.7（9件）</div></div><button onclick="hire(this,'木村 H.')">頼む ¥8,500</button></div>
+        </div>
+        <div class="note">Lask が書く依頼文：艇種・前回の整備日・希望日程・予算 を自動で入れる。<b>あなたが書くことは無い。</b>お金は承認ボタンの 1回だけ。</div>
+      </div>
+      <div id="aiBox" class="gone"><div class="note">🤖 AI が マリーナ 2ヶ所に電話 → 空き枠を 3つ取って「承認」に上げます。所要 15分・¥300。<b>予約の確定はあなたの 1タップ。</b></div><button class="big" onclick="fin('AI に任せました。15分後に「承認」へ上がります')">🤖 AI に任せる</button></div>
+      <div id="pplBox" class="gone"><div class="note">👤 上田さんに Lask が 1行で頼みます：「10月の船の整備、前回と同じマリーナで空きを取ってください（〜9/20）」。返事が無ければ 2日で 1回だけ追いかけ、3日でランサーズに切替を提案。</div><button class="big" onclick="fin('上田さんに送りました。追いかけるのは Lask です')">👤 上田さんに頼む</button></div>
+      <div id="meBox" class="gone"><div class="note">✍︎ 今日の「あなたがやる」に入れます。上限 2 を超えるので、母への電話を明日に動かします。</div><button class="big" onclick="fin('入れました。母への電話は明日 7:00 に')">✍︎ 自分でやる</button></div>
+    </section>
+
+    <!-- ================= 夢詳細 d1 ================= -->
+    <section class="page dt" id="d1">
+      <button class="back" onclick="back()">‹ 夢</button>
+      <h2>新規 AI プロダクトを出す</h2>
+      <div class="sub"><span class="tag work">仕事</span>2027 ローンチ／親：2030 東証プライム／今日 取締役会で線がつながる</div>
+      <div class="sec"><h4>年次ノート</h4><span>本人の言葉のまま</span></div>
+      <div class="card"><table class="tbl">
+        <tr><td>2026/9</td><td>「タスクは発生するもの。入力ゼロにする」</td></tr>
+        <tr><td>2026/6</td><td>「AI で 1人が 10人分 動ける会社にする」</td></tr>
+        <tr><td>2025/12</td><td>「次の 10年の柱を 1つ作る」</td></tr>
+      </table></div>
+      <div class="sec"><h4>最初の一手 3候補</h4><span>1つだけ選ぶ</span></div>
+      <div class="card lask">
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">競合 20社 を 1週間で調べる</div><div class="m">¥600・毎朝 3行で届く</div><div class="acts"><button class="p" onclick="toast('AI が始めました。明朝 7:00 から 3行ずつ')">これ</button></div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">プロトタイプを ランサーズの開発者 2名と 3週間で</div><div class="m">¥900,000・Lask が要件書を下書き済</div><div class="acts"><button class="lan" onclick="toast('要件書と 候補 5名 を「承認待ち」に上げました')">🤝 候補を見る</button></div></div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">大西さん（前職の上司・新規事業 3回）に 30分</div><div class="m">1年4ヶ月 会っていない・聞くだけで 一手が出る型</div><div class="acts"><button class="p" onclick="toast('打診の一言を下書きしました')">聞いてみる</button></div></div></div>
+      </div>
+      <button class="big" style="background:var(--paper);color:var(--ink2);border:1px solid var(--line);box-shadow:none" onclick="toast('降ろしました。半年後に「まだ興味ある？」だけ聞きます')">この夢を降ろす</button>
+    </section>
+
+  </div>
+
+  <nav class="tabs">
+    <button class="on" data-tab="home" onclick="tab('home')"><i>☀︎</i>今日</button>
+    <button data-tab="tree" onclick="tab('tree')"><i>⌇</i>夢<span class="dot">9</span></button>
+    <button data-tab="ppl" onclick="tab('ppl')"><i>◎</i>人</button>
+    <button data-tab="bal" onclick="tab('bal')"><i>◔</i>配分</button>
+    <button data-tab="log" onclick="tab('log')"><i>🔁</i>自動<span class="dot">1</span></button>
+  </nav>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let cur='home', prev='home';
+function show(id){ $$('.page').forEach(p=>p.classList.toggle('on',p.id===id)); $('#view').scrollTop=0; prev=cur; cur=id; }
+function tab(id){ show(id); $$('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===id)); }
+function go(id){ show(id); }
+function back(){ const t=['home','tree','ppl','bal','log'].includes(prev)?prev:'home'; tab(t); }
+function doneRow(el,e){ if(e.target.classList.contains('cb')){ el.classList.toggle('done'); el.querySelector('.cb').textContent=el.classList.contains('done')?'✓':''; toast(el.classList.contains('done')?'終わった。次に起きることは Lask が動かします':'戻しました'); } else go(el.dataset.go); }
+let tm; function toast(s){ const t=$('#toast'); t.textContent=s; t.classList.add('on'); clearTimeout(tm); tm=setTimeout(()=>t.classList.remove('on'),2600); }
+function kill(b){ const li=b.closest('.li'); li.style.transition='.25s'; li.style.opacity=0; li.style.transform='translateX(30px)'; setTimeout(()=>li.remove(),260); toast('消しました。この口の的中率に反映します'); }
+function approve(b){ const li=b.closest('.li'); li.querySelector('.acts').innerHTML='<span style="font-size:12px;color:var(--ai);font-weight:700">✓ 発注しました（¥120,000）— 高橋 R. に Lask が依頼文を送信</span>'; toast('発注。納期 5日・進捗は「自動」で追えます'); const d=$('.tabs [data-tab=log] .dot'); if(d) d.remove(); }
+function pick(b,k){ $$('.who button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); ['cand','ai','ppl','me'].forEach(x=>$('#'+x+'Box').classList.add('gone')); $('#'+(k==='lan'?'cand':k)+'Box').classList.remove('gone'); }
+function hire(b,n){ $$('.cand .c').forEach(c=>c.classList.remove('picked')); b.closest('.c').classList.add('picked'); b.textContent='依頼中'; fin(n+' さんに Lask が依頼文を送りました。返事が来たら「承認」に上がります'); }
+function fin(s){ toast(s); setTimeout(()=>tab('log'),1300); }
+
+/* live counters */
+let p1=71, s1=252, y1=42, p2=18, s2=64, y2=9, ai=12480, qa=11, tick=0;
+const f=s=>Math.floor(s/60)+'分'+String(s%60).padStart(2,'0')+'秒';
+setInterval(()=>{ tick++; s1++; s2++;
+  if(tick%3==0&&p1<99)p1++; if(tick%4==0&&p2<99)p2++; if(tick%5==0){y1++;y2++;ai+=2}
+  if(tick%17==0)qa++;
+  ['p1','p1b'].forEach(i=>$('#'+i).textContent=p1+'%'); ['t1s','t1b'].forEach(i=>$('#'+i).textContent=f(s1)); ['y1','y1b'].forEach(i=>$('#'+i).textContent='¥'+y1);
+  $('#p2').textContent=p2+'%'; $('#t2b').textContent=f(s2); $('#y2').textContent='¥'+y2; $('#bar1').style.width=p1+'%'; $('#bar2').style.width=p2+'%';
+  ['mAI','mAI2'].forEach(i=>$('#'+i).textContent='¥'+ai.toLocaleString()); $('#qa').textContent=qa;
+},1000);
+/* clock */
+(function(){ const d=new Date(); const w='日月火水木金土'[d.getDay()]; $('#clock').textContent=`${d.getMonth()+1}/${d.getDate()} ${w} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`; })();
+</script>
+</body>
+</html>
