@@ -152,6 +152,19 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 .tbl b{font-weight:700}
 .demo{position:fixed;top:calc(env(safe-area-inset-top) + 14px);right:14px;font-size:9.5px;letter-spacing:.12em;color:var(--mute);border:1px solid #cfcabd;border-radius:6px;padding:2px 6px;background:rgba(255,254,251,.8);pointer-events:none;z-index:5}
 .fade{opacity:.45}
+.os{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:4px 14px}
+.osrow{display:grid;grid-template-columns:86px 74px 1fr;gap:8px;align-items:baseline;padding:10px 0;border-top:1px solid var(--line);font-size:12px}
+.osrow:first-child{border-top:0}
+.osrow .k{font-weight:700;color:var(--ink2)}.osrow .v{font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.osrow .v small{font-size:11px;color:var(--mute);font-weight:600;margin-left:2px}
+.osrow .d{color:var(--mute);line-height:1.5}.osrow .d b{color:var(--ink);font-weight:700}
+.osrow.sum{background:var(--soft);margin:0 -14px -4px;padding:12px 14px;border-radius:0 0 var(--r) var(--r);border-top:1.5px dashed #cfcabd}
+.osrow.sum .v{color:var(--dream)}
+.who4{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+.who4 span{font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--mute)}
+.who4 span.rec{background:var(--ink);color:#fff;border-color:var(--ink)}
+.who4 span.rec::after{content:" ◂ 提案";font-weight:500;opacity:.7}
+.legend{font-size:11px;color:var(--mute);line-height:1.8;padding:10px 6px 0;display:flex;flex-wrap:wrap;gap:4px 12px}
+.legend em{font-style:normal;flex-basis:100%}
 </style>
 </head>
 <body>
@@ -168,21 +181,30 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
       <div class="tabhint">入力ゼロ。今日やるのは 2つだけ。残りは AI と人が動かしている</div>
       <div class="hero">
         <div class="day"><b>9/15（火）</b>　取締役会 10:00　／　自由 3.5h</div>
-        <h1>今日は、10:00の取締役会で<em>新規事業のGOを取る</em>。それだけで勝ち。</h1>
-        <p>資料は昨夜 AI が最終稿にした。数字の裏取りは<b>ランサーズの佐藤さん</b>（財務モデル）が 23:40 に納品済み。あなたが見るのは <b>3ページ目の1行</b>だけ。</p>
+        <h1>今日は、10:00の取締役会で<em>「AIワークフォースが集う場」の核を1つに決める</em>。それだけで勝ち。</h1>
+        <p>5案の比較表は昨夜 AI が作った。マイクロ法人 3社へのヒアリングは<b>ランサーズの佐藤さん</b>が 23:40 に納品済み。あなたが見るのは <b>2ページ目の結論 1行</b>だけ。</p>
         <div class="heroact">
           <button class="y" onclick="toast('わかった。今日はこの一言だけ覚えていれば OK')">わかった</button>
           <button onclick="toast('違う → 理由を1語だけ聞いて、明日の一言に反映します')">違う</button>
         </div>
-        <div class="src">根拠：カレンダー「取締役会」／Slack #新規事業 の昨夜の流れ／夢「AIプロダクトを出す」の線上にある唯一の予定</div>
+        <div class="src">根拠：カレンダー「取締役会」／Slack #AIワークフォース の昨夜の流れ／憲法「仕組みとして自動に回る状態が好き」／夢「AI Workforce 10万人」の線上にある唯一の予定</div>
       </div>
+
+      <div class="sec"><h4>🧬 あなたという OS</h4><span>ここから タスクが発生する</span></div>
+      <div class="os">
+        <div class="osrow"><div class="k">行動ログ</div><div class="v">1,240<small>件/月</small></div><div class="d">カレンダー・Slack・移動・購入・会話</div></div>
+        <div class="osrow"><div class="k">憲法</div><div class="v">4<small>行</small></div><div class="d">生き方の芯。あなたの言葉のまま</div></div>
+        <div class="osrow"><div class="k">バケットリスト</div><div class="v">41<small>件</small></div><div class="d">10年先まで。止まり 9</div></div>
+        <div class="osrow sum"><div class="k">今日 発生</div><div class="v">14<small>件</small></div><div class="d">あなたが入れたのは <b>2</b>。残り 12 は Lask が気づいた</div></div>
+      </div>
+      <div class="src">既存のタスク管理＝あなたが「大事」と認識して登録した 20%。Lask＝行動ログ・憲法・バケットリストから、<b>あなたすら気づいていない 80%</b> を発生させる。</div>
 
       <div class="sec"><h4>✍︎ 今日あなたがやる</h4><span>代わりがいないものだけ・上限2</span></div>
       <div class="mine">
         <div class="row" onclick="doneRow(this,event)" data-go="t1">
           <div class="cb"></div>
-          <div><div class="t">取締役会：新規AIプロダクトの投資枠を決める</div>
-            <div class="m"><span class="tag work">仕事</span>効く先 → <b>2030 東証プライム</b>／資料は整っている・決めるだけ</div></div>
+          <div><div class="t">取締役会：「AIワークフォースが集う場」の核を1つ決める</div>
+            <div class="m"><span class="tag work">仕事</span>効く先 → <b>AI Workforce 10万人 → 2030 東証プライム</b>／材料は揃っている・決めるだけ</div></div>
           <div class="ar">›</div>
         </div>
         <div class="row" onclick="doneRow(this,event)" data-go="t2">
@@ -194,32 +216,43 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
         <div class="why">上限2の理由：18:30 会食までの自由が 3.5h。3つ目を入れると「考える時間」が消える</div>
       </div>
 
-      <div class="sec"><h4>◎ Lask が立てた</h4><span>点線＝勝手に立てた・1タップで消せる</span></div>
+      <div class="sec"><h4>◎ 気づいていなかったタスク</h4><span>Lask が発生・1タップで消せる</span></div>
       <div class="card lask">
         <div class="li">
           <div class="ic">◎</div>
           <div><div class="t">取締役会の後、5分だけ 社長室に「決まったこと」を口頭で</div>
-            <div class="m"><span class="tag work">仕事</span>口：会議の後の空白／効く：翌日の稟議が 2日 早くなる（過去12回の実績）</div>
+            <div class="m"><span class="tag work">仕事</span>根拠：<b>行動ログ</b>（過去12回、会議直後の共有で翌日の稟議が 2日 早い）／効く：EBITDA の線</div>
+            <div class="who4"><span class="rec" onclick="assign(event,this,'me')">✍︎ 自分</span><span class="" onclick="assign(event,this,'ai')">🤖 AI</span><span class="" onclick="assign(event,this,'out')">🤝 外注</span><span class="" onclick="assign(event,this,'ppl')">👤 人</span></div>
             <div class="acts"><button class="p" onclick="toast('入れました。11:05 に 1行で通知します')">やる</button><button onclick="kill(this)">違う</button></div></div>
         </div>
         <div class="li">
           <div class="ic">◎</div>
           <div><div class="t">10月の船：整備の予約を入れる（窓が閉じるまで 6日）</div>
-            <div class="m"><span class="tag hobby">趣味</span>口：リードタイム（整備は 3週間前）／これを逃すと 11月まで乗れない</div>
+            <div class="m"><span class="tag hobby">趣味</span>根拠：<b>バケットリスト</b>「船で港を巡る」＋ 行動ログ（前回整備 5ヶ月前・整備は 3週間前が必要）／逃すと 11月まで乗れない</div>
+            <div class="who4"><span class="" onclick="assign(event,this,'me')">✍︎ 自分</span><span class="" onclick="assign(event,this,'ai')">🤖 AI</span><span class="rec" onclick="assign(event,this,'out')">🤝 外注</span><span class="" onclick="assign(event,this,'ppl')">👤 人</span></div>
             <div class="acts"><button class="lan" onclick="go('t3')">🤝 誰かに頼む ›</button><button onclick="kill(this)">違う</button></div></div>
         </div>
         <div class="li">
           <div class="ic">◎</div>
           <div><div class="t">チェロ：400日止まっている。先月会食した田村さんの娘さんがチェリスト</div>
-            <div class="m"><span class="tag dream">夢</span>口：人の橋渡し／答えは「調べる」ではなく「聞いてみる」</div>
+            <div class="m"><span class="tag dream">夢</span>根拠：<b>バケットリスト</b>「チェロ」（400日動きなし）× 行動ログ（先月の会食参加者）／答えは「調べる」ではなく「人」</div>
+            <div class="who4"><span class="" onclick="assign(event,this,'me')">✍︎ 自分</span><span class="" onclick="assign(event,this,'ai')">🤖 AI</span><span class="" onclick="assign(event,this,'out')">🤝 外注</span><span class="rec" onclick="assign(event,this,'ppl')">👤 人</span></div>
             <div class="acts"><button class="p" onclick="toast('田村さんへの一言を下書きしました。送るのはあなたです')">聞いてみる</button><button onclick="kill(this)">もういい</button></div></div>
         </div>
+        <div class="li">
+          <div class="ic">◎</div>
+          <div><div class="t">睡眠が 3週連続で 6h を切っている。会食を 週2 → 週1 に</div>
+            <div class="m"><span class="tag health">体</span>根拠：<b>憲法</b>「早く寝て、睡眠をしっかりとる人生」× 行動ログ（会食 8回/月・就寝 24:40 平均）／あなたは言っていない。Lask が気づいた</div>
+            <div class="who4"><span class="" onclick="assign(event,this,'me')">✍︎ 自分</span><span class="rec" onclick="assign(event,this,'ai')">🤖 AI</span><span class="" onclick="assign(event,this,'out')">🤝 外注</span><span class="" onclick="assign(event,this,'ppl')">👤 人</span></div>
+            <div class="acts"><button class="p" onclick="toast('AI が 10月の会食 4件に「昼に変更できますか」を下書きしました。送るのは 1タップ')">🤖 AI に調整させる</button><button onclick="kill(this)">違う</button></div></div>
+        </div>
       </div>
+      <div class="legend"><span>✍︎ 自分でやる</span><span>🤖 AI がやる</span><span>🤝 外注（ランサーズ）</span><span>👤 人とつながる</span><em>— どれで進むかを Lask が提案し、進捗は自動で動く</em></div>
 
-      <div class="sec"><h4>🔁 あなた抜きで動いている</h4><span id="cntRun">7件 → 自動タブ</span></div>
+      <div class="sec"><h4>🔁 進捗は自動で動く</h4><span id="cntRun">あなた抜きで 7件 → 自動</span></div>
       <div class="card" onclick="tab('log')">
         <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div>
-          <div><div class="t">取締役会資料：Q&A 想定 20問を作成中</div><div class="m"><span class="pulse"></span><span id="p1">71%</span>・<span id="t1s">4分12秒</span>・<span class="yen" id="y1">¥42</span></div></div><div class="ar">›</div></div>
+          <div><div class="t">取締役会：5案それぞれの想定 Q&A を作成中</div><div class="m"><span class="pulse"></span><span id="p1">71%</span>・<span id="t1s">4分12秒</span>・<span class="yen" id="y1">¥42</span></div></div><div class="ar">›</div></div>
         <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">🤝</div>
           <div><div class="t">ランサーズ：会社紹介 動画の編集（山本 M. さん）</div><div class="m">納品予定 9/17・見積 ¥68,000（承認済）・進捗 40%</div></div><div class="ar">›</div></div>
         <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div>
@@ -246,7 +279,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 
       <div class="sec"><h4>✓ 昨日終わった</h4><span>9件（あなたは 2件）</span></div>
       <div class="card fade">
-        <div class="li"><div class="ic">✓</div><div><div class="t">取締役会資料 v7 → 最終稿</div><div class="m">AI 4件・ランサーズ 佐藤さん 1件（財務モデル）・あなた 1件（1行直した）</div></div></div>
+        <div class="li"><div class="ic">✓</div><div><div class="t">「集う場」企画 v0.5 → 5案の比較表</div><div class="m">AI 4件・ランサーズ 佐藤さん 1件（ヒアリング）・あなた 1件（1行直した）</div></div></div>
         <div class="li"><div class="ic">✓</div><div><div class="t">社内 Q&A 42件に一次回答</div><div class="m">AI・あなたが見たのは 3件</div></div></div>
         <div class="li"><div class="ic">✓</div><div><div class="t">ジム 60分（脚）</div><div class="m">あなた・体は回っている</div></div></div>
       </div>
@@ -267,7 +300,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 
       <div class="sec"><h4>◎ 止まっている</h4><span>詰めない。興味だけ聞く</span></div>
       <div class="card lask">
-        <div class="li" onclick="go('d1')"><div class="ic">◎</div><div><div class="t">新規 AI プロダクトを出す</div><div class="m"><span class="tag work">仕事</span>子タスク 3・今日の取締役会で <b>線がつながる</b></div></div><div class="ar">›</div></div>
+        <div class="li" onclick="go('d1')"><div class="ic">◎</div><div><div class="t">AI Workforce 10万人の場を作る</div><div class="m"><span class="tag work">仕事</span>子タスク 3・今日の取締役会で <b>線がつながる</b></div></div><div class="ar">›</div></div>
         <div class="li"><div class="ic">◎</div><div><div class="t">狩猟免許</div><div class="m"><span class="tag hobby">趣味</span>210日・「行ける人いるよ」と言った社員が 2人いる</div>
           <div class="acts"><button class="p" onclick="toast('社員 2人に「今度 話を聞かせて」を下書きしました')">ある</button><button onclick="toast('一手は Lask が探します：猟友会の講習 10/4（ランサーズで同行者も募集できます）')">一手が浮かばない</button><button onclick="kill(this)">もういい</button></div></div></div>
         <div class="li"><div class="ic">◎</div><div><div class="t">海外に住む（2033）</div><div class="m"><span class="tag dream">人生</span>子タスク 0・線が切れている</div>
@@ -280,7 +313,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
       <div class="tabhint">人はタスクと対等。誰と会うと、何が動くか</div>
       <div class="sec"><h4>◎ 会うと、動くもの</h4><span>毎朝 組み替わる</span></div>
       <div class="card"><table class="tbl">
-        <tr><td>今日 10:00</td><td><b>取締役 4名</b><br>動く：<b>新規 AI プロダクト</b>（この 4人が揃うのは今月ここだけ）</td></tr>
+        <tr><td>今日 10:00</td><td><b>取締役 4名</b><br>動く：<b>AIワークフォースが集う場</b>（この 4人が揃うのは今月ここだけ）</td></tr>
         <tr><td>9/19・4日後</td><td><b>田村さん</b>（会食）<br>動く：<b>チェロ</b>（娘さんがチェリスト・400日ぶりに動く）</td></tr>
         <tr><td>1年4ヶ月ぶり</td><td><b>大西さん</b>（前職の上司）<br>動く：<b>海外に住む</b>（本人が 2年前に移住・聞くだけで一手が出る）</td></tr>
         <tr><td>10月第2週</td><td><b>社内の釣りの人</b><br>動く：<b>釣り</b>・90日で唯一の空白。入れられるのは 1つだけ</td></tr>
@@ -336,7 +369,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 
       <div class="sec"><h4>🤖 AI が動かしている</h4><span>1秒ごとに動く</span></div>
       <div class="card">
-        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">取締役会 Q&A 想定 20問</div><div class="m"><span class="pulse"></span><span id="p1b">71%</span>・<span id="t1b">4分12秒</span>・<span class="yen" id="y1b">¥42</span></div><div class="prog"><i id="bar1" style="width:71%"></i></div></div></div>
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">取締役会 想定 Q&A 20問（5案それぞれ）</div><div class="m"><span class="pulse"></span><span id="p1b">71%</span>・<span id="t1b">4分12秒</span>・<span class="yen" id="y1b">¥42</span></div><div class="prog"><i id="bar1" style="width:71%"></i></div></div></div>
         <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">南極 B案：費用・日程・同行者候補</div><div class="m"><span class="pulse"></span><span id="p2">18%</span>・<span id="t2b">1分04秒</span>・<span class="yen" id="y2">¥9</span></div><div class="prog"><i id="bar2" style="width:18%"></i></div></div></div>
         <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">社内 Q&A 一次回答（常時）</div><div class="m">今日 <span id="qa">11</span>件・あなたに回したのは 1件</div></div></div>
       </div>
@@ -351,7 +384,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
       <div class="sec"><h4>👤 社内の人が動かしている</h4><span>追いかけるのは Lask</span></div>
       <div class="card">
         <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">社長室 佐々木：合宿カメラマン 見積 3社</div><div class="m">返事 1/3・3日2時間・<b>明日朝までに無ければ ランサーズ募集に切替</b>（自動）</div></div></div>
-        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">経営企画 中村：新規事業 予算案 v2</div><div class="m">今日 9:30 まで・Lask が 8:30 に 1行リマインド</div></div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">マーケ部長 中村：供給側の導線 案 v2</div><div class="m">今日 9:30 まで・Lask が 8:30 に 1行リマインド</div></div></div>
       </div>
 
       <div class="sec"><h4>信頼の層</h4><span>消さない・順位を下げただけ</span></div>
@@ -365,22 +398,22 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
     <!-- ================= 詳細 t1 ================= -->
     <section class="page dt" id="t1">
       <button class="back" onclick="back()">‹ 今日</button>
-      <h2>取締役会：新規 AI プロダクトの投資枠を決める</h2>
+      <h2>取締役会：「AIワークフォースが集う場」の核を1つ決める</h2>
       <div class="sub"><span class="tag work">仕事</span>✍︎ あなたが入れた（9/1 音声）／今日 10:00／代わりがいない</div>
       <div class="sec"><h4>どこに効くか</h4><span>線</span></div>
       <div class="chain">
-        <div class="st hot"><i></i><div><div class="t">今日：投資枠を決める</div><div class="m">これが無いと下の全部が止まる</div></div></div>
-        <div class="st"><i></i><div><div class="t">10月：プロトタイプ（ランサーズ + AI で 3週間）</div><div class="m">Lask が 発注案を作成済み・承認待ち</div></div></div>
-        <div class="st"><i></i><div><div class="t">2027：新規事業 売上 ○億</div><div class="m">中期計画</div></div></div>
+        <div class="st hot"><i></i><div><div class="t">今日：核を1つ決める（5案 → 1）</div><div class="m">これが無いと下の全部が止まる</div></div></div>
+        <div class="st"><i></i><div><div class="t">10月：ローンチ（提供価値 → 機能・導線）</div><div class="m">Lask が 要件の下書きを作成済み・承認待ち</div></div></div>
+        <div class="st"><i></i><div><div class="t">2028：AI Workforce 10万人</div><div class="m">面談済み 1万人 → 2年で 10万人</div></div></div>
         <div class="st cut"><i></i><div><div class="t">2030：東証プライム</div><div class="m">線が切れている（子タスク 0）</div></div></div>
       </div>
       <div class="sec"><h4>Lask が整えたもの</h4><span>あなたは決めるだけ</span></div>
       <div class="card">
-        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">資料 最終稿・想定 Q&A 20問</div><div class="m">¥310</div></div></div>
-        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">財務モデルの裏取り — 佐藤 K.</div><div class="m">¥30,000・昨夜 23:40 納品</div></div></div>
-        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">経営企画 中村：予算案 v2</div><div class="m">9:30 まで・Lask が追いかけている</div></div></div>
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">5案の比較表・想定 Q&A 20問</div><div class="m">¥310</div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">マイクロ法人 3社ヒアリング — 佐藤 K.</div><div class="m">¥30,000・昨夜 23:40 納品</div></div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">マーケ部長 中村：供給側の導線 案 v2</div><div class="m">9:30 まで・Lask が追いかけている</div></div></div>
       </div>
-      <div class="note">決まった後に自動で起きること：① 社長室に 1行共有 ② プロトタイプの発注案が「承認待ち」に上がる ③ 2030 の線に子タスクが 1本つながる</div>
+      <div class="note">決まった後に自動で起きること：① 社長室に 1行共有 ② 10月ローンチの要件下書きが「承認待ち」に上がる ③ 一言の定義を社内外の資料 4本に AI が反映（承認 1回）</div>
     </section>
 
     <!-- ================= 詳細 t2 ================= -->
@@ -426,19 +459,19 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
     <!-- ================= 夢詳細 d1 ================= -->
     <section class="page dt" id="d1">
       <button class="back" onclick="back()">‹ 夢</button>
-      <h2>新規 AI プロダクトを出す</h2>
-      <div class="sub"><span class="tag work">仕事</span>2027 ローンチ／親：2030 東証プライム／今日 取締役会で線がつながる</div>
+      <h2>AI Workforce 10万人の場を作る</h2>
+      <div class="sub"><span class="tag work">仕事</span>10月 ローンチ／親：2030 東証プライム／今日 取締役会で線がつながる</div>
       <div class="sec"><h4>年次ノート</h4><span>本人の言葉のまま</span></div>
       <div class="card"><table class="tbl">
-        <tr><td>2026/9</td><td>「タスクは発生するもの。入力ゼロにする」</td></tr>
+        <tr><td>2026/9</td><td>「案件は結果であって、集まる理由ではない」</td></tr>
         <tr><td>2026/6</td><td>「AI で 1人が 10人分 動ける会社にする」</td></tr>
         <tr><td>2025/12</td><td>「次の 10年の柱を 1つ作る」</td></tr>
       </table></div>
       <div class="sec"><h4>最初の一手 3候補</h4><span>1つだけ選ぶ</span></div>
       <div class="card lask">
-        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">競合 20社 を 1週間で調べる</div><div class="m">¥600・毎朝 3行で届く</div><div class="acts"><button class="p" onclick="toast('AI が始めました。明朝 7:00 から 3行ずつ')">これ</button></div></div></div>
-        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">プロトタイプを ランサーズの開発者 2名と 3週間で</div><div class="m">¥900,000・Lask が要件書を下書き済</div><div class="acts"><button class="lan" onclick="toast('要件書と 候補 5名 を「承認待ち」に上げました')">🤝 候補を見る</button></div></div></div>
-        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">大西さん（前職の上司・新規事業 3回）に 30分</div><div class="m">1年4ヶ月 会っていない・聞くだけで 一手が出る型</div><div class="acts"><button class="p" onclick="toast('打診の一言を下書きしました')">聞いてみる</button></div></div></div>
+        <div class="li"><div class="ic" style="background:#dff0e8;color:var(--ai)">AI</div><div><div class="t">海外の AI 人材コミュニティ 20 を 1週間で調べる</div><div class="m">¥600・毎朝 3行で届く</div><div class="acts"><button class="p" onclick="toast('AI が始めました。明朝 7:00 から 3行ずつ')">これ</button></div></div></div>
+        <div class="li"><div class="ic" style="background:#e0e8fa;color:var(--lan)">L</div><div><div class="t">認定・舞台の試作を ランサーズの AI 人材 2名と 3週間で</div><div class="m">¥900,000・Lask が要件書を下書き済</div><div class="acts"><button class="lan" onclick="toast('要件書と 候補 5名 を「承認待ち」に上げました')">🤝 候補を見る</button></div></div></div>
+        <div class="li"><div class="ic" style="background:#f1ede4;color:var(--ask)">人</div><div><div class="t">大西さん（前職の上司・コミュニティ立ち上げ 3回）に 30分</div><div class="m">1年4ヶ月 会っていない・聞くだけで 一手が出る型</div><div class="acts"><button class="p" onclick="toast('打診の一言を下書きしました')">聞いてみる</button></div></div></div>
       </div>
       <button class="big" style="background:var(--paper);color:var(--ink2);border:1px solid var(--line);box-shadow:none" onclick="toast('降ろしました。半年後に「まだ興味ある？」だけ聞きます')">この夢を降ろす</button>
     </section>
@@ -468,6 +501,7 @@ function kill(b){ const li=b.closest('.li'); li.style.transition='.25s'; li.styl
 function approve(b){ const li=b.closest('.li'); li.querySelector('.acts').innerHTML='<span style="font-size:12px;color:var(--ai);font-weight:700">✓ 発注しました（¥120,000）— 高橋 R. に Lask が依頼文を送信</span>'; toast('発注。納期 5日・進捗は「自動」で追えます'); const d=$('.tabs [data-tab=log] .dot'); if(d) d.remove(); }
 function pick(b,k){ $$('.who button').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); ['cand','ai','ppl','me'].forEach(x=>$('#'+x+'Box').classList.add('gone')); $('#'+(k==='lan'?'cand':k)+'Box').classList.remove('gone'); }
 function hire(b,n){ $$('.cand .c').forEach(c=>c.classList.remove('picked')); b.closest('.c').classList.add('picked'); b.textContent='依頼中'; fin(n+' さんに Lask が依頼文を送りました。返事が来たら「承認」に上がります'); }
+function assign(e,el,k){ e.stopPropagation(); const box=el.parentNode; box.querySelectorAll('span').forEach(x=>x.classList.remove('rec')); el.classList.add('rec'); const t=el.closest('.li').querySelector('.t').textContent; const m={me:'✍︎ 今日の「あなたがやる」に入れます',ai:'🤖 AI が始めました。進捗は「自動」で動きます',out:'🤝 ランサーズの候補 3名を Lask が絞ります → 承認待ちに上がります',ppl:'👤 近い人を探して、聞く一言を下書きします'}[k]; toast(m); if(k!=='me') setTimeout(()=>tab('log'),1400); }
 function fin(s){ toast(s); setTimeout(()=>tab('log'),1300); }
 
 /* live counters */
