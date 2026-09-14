@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lask — 25歳が使ったら</title>
+<style>
+  :root{
+    --bg:#e9e8e3; --paper:#fffefb; --ink:#141311; --ink2:#3d3a34; --mute:#8b877d; --line:#e8e5dd; --soft:#f6f4ee;
+    --work:#2f5d92; --home:#b0402b; --dream:#67399c; --hobby:#1c7355; --health:#b8740f;
+    --ai:#1c7355; --ask:#95591f; --think:#2f5d92; --gone:#a5a199; --out:#75468a;
+    --r:16px;
+    --sh:0 1px 2px rgba(20,19,17,.05), 0 1px 1px rgba(20,19,17,.03);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1}
+  .stage{max-width:1240px;margin:0 auto;padding:26px 22px 70px;display:grid;grid-template-columns:412px 1fr;gap:44px;align-items:start}
+  @media (max-width:940px){.stage{grid-template-columns:1fr}}
+
+  /* ---------- phone ---------- */
+  .phone{width:412px;background:#fbfaf7;border:1px solid #dcd8ce;border-radius:46px;padding:13px;
+    box-shadow:0 50px 90px -45px rgba(20,19,17,.45), 0 2px 6px rgba(20,19,17,.06);position:sticky;top:22px}
+  .scr{border-radius:34px;overflow:hidden;background:var(--bg);height:860px;display:flex;flex-direction:column;position:relative}
+  .notch{height:32px;display:flex;align-items:center;justify-content:center;flex:none;background:var(--bg)}
+  .notch i{width:104px;height:23px;background:var(--ink);border-radius:14px}
+
+  /* top bar */
+  .bar{display:flex;align-items:center;justify-content:space-between;padding:2px 17px 10px;flex:none;background:var(--bg)}
+  .brand{font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1}
+  .brand small{display:block;font-weight:400;font-size:10.5px;color:var(--mute);letter-spacing:.05em;margin-top:3px}
+  .acts{display:flex;gap:6px;align-items:center}
+  .icb{width:33px;height:33px;border-radius:50%;border:1px solid var(--line);background:var(--paper);font-size:14px;
+       cursor:pointer;display:grid;place-items:center;color:var(--ink);box-shadow:var(--sh)}
+  .talk{border:0;background:var(--ink);color:#fff;border-radius:17px;height:33px;padding:0 13px;font-size:12.5px;font-weight:600;cursor:pointer;
+        display:flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(20,19,17,.2)}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:3px;margin:0 15px 9px;background:#dedbd3;padding:3px;border-radius:12px;flex:none}
+  .tabs button{flex:1;border:0;background:transparent;padding:7px 0 6px;border-radius:9px;font-size:11.5px;color:#7d7970;
+    cursor:pointer;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1.2;transition:.15s}
+  .tabs button i{font-style:normal;font-size:13px;opacity:.75}
+  .tabs button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(20,19,17,.12)}
+  .tabs button.on i{opacity:1}
+  .tabhint{font-size:10px;color:var(--mute);text-align:center;padding:0 16px 8px;line-height:1.5;flex:none}
+
+  /* scroll body */
+  .view{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 14px 26px}
+  .view::-webkit-scrollbar{width:0}
+  .page{display:none}
+  .page.on{display:block}
+
+  /* section head */
+  .sec{display:flex;align-items:baseline;justify-content:space-between;margin:20px 4px 8px}
+  .sec h4{margin:0;font-size:11px;letter-spacing:.13em;font-weight:700;color:var(--mute)}
+  .sec span{font-size:10.5px;color:var(--mute)}
+  .sec.tight{margin-top:14px}
+
+  /* 一言 */
+  .hero{padding:10px 6px 4px}
+  .hero .day{font-size:11px;color:var(--mute);letter-spacing:.09em}
+  .hero .day b{font-weight:600;color:var(--ink2)}
+  .hero h1{font-size:25px;line-height:1.45;font-weight:700;letter-spacing:-.02em;margin:12px 0 10px}
+  .hero h1 em{font-style:normal;background:linear-gradient(transparent 62%, #f2e2b8 62%);padding:0 2px}
+  .hero p{font-size:13.5px;line-height:1.85;color:var(--ink2);margin:0 0 14px}
+  .hero p b{font-weight:600;color:var(--ink)}
+  .heroact{display:flex;gap:8px}
+  .heroact button{flex:1;border:1px solid var(--line);background:var(--paper);padding:12px;border-radius:13px;font-size:13.5px;
+    font-weight:600;cursor:pointer;box-shadow:var(--sh);color:var(--ink)}
+  .heroact button.y{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .src{font-size:10.5px;color:var(--mute);line-height:1.6;margin:9px 2px 0}
+  .src b{color:var(--ink2);font-weight:600}
+
+  /* 自分がやる */
+  .mine{background:var(--ink);border-radius:var(--r);padding:13px 13px 6px;color:#fff;box-shadow:0 8px 24px -14px rgba(20,19,17,.6)}
+  .row{display:grid;grid-template-columns:23px 1fr 14px;gap:11px;padding:12px 2px;border-top:1px solid #322f2a;align-items:start;cursor:pointer}
+  .row:first-of-type{border-top:0}
+  .cb{width:21px;height:21px;border-radius:7px;border:1.6px solid #6d6759;margin-top:1px}
+  .row .t{font-size:15px;line-height:1.5;font-weight:600;letter-spacing:-.01em}
+  .row .b{font-size:12px;color:#c6c0b2;margin-top:4px;line-height:1.6}
+  .row .b:before{content:"→ ";color:#8d8779}
+  .row .w{font-size:11px;color:#8d8779;margin-top:3px;line-height:1.5}
+  .row .chev{color:#6d6759;font-size:15px;margin-top:2px}
+  .tag{font-size:9.5px;font-weight:700;letter-spacing:.07em;padding:2px 6px;border-radius:5px;color:#fff;margin-right:6px;vertical-align:2px}
+  .tag.work{background:var(--work)}.tag.home{background:var(--home)}.tag.dream{background:var(--dream)}
+  .tag.hobby{background:var(--hobby)}.tag.health{background:var(--health)}
+  .mine .lim{font-size:11px;color:#8d8779;padding:8px 2px 6px;border-top:1px solid #322f2a;line-height:1.6}
+
+  /* 線 */
+  .line{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:6px 14px 10px;box-shadow:var(--sh);position:relative}
+  .line:before{content:"";position:absolute;left:75px;top:20px;bottom:22px;width:1.5px;background:linear-gradient(var(--line),var(--line) 70%,transparent)}
+  .nd{display:grid;grid-template-columns:44px 1fr;gap:24px;padding:9px 0;position:relative;cursor:pointer}
+  .nd .yr{font-size:10px;color:var(--mute);text-align:right;padding-top:3px;letter-spacing:.03em;white-space:nowrap}
+  .nd b{font-size:13.5px;display:block;letter-spacing:-.01em}
+  .nd small{display:block;font-size:10.5px;color:var(--mute);margin-top:2px;line-height:1.5}
+  .nd:after{content:"";position:absolute;left:55px;top:12px;width:11px;height:11px;border-radius:50%;background:var(--paper);border:2px solid var(--dream)}
+  .nd.mid:after{border-color:var(--ink)}
+  .nd.now:after{background:var(--ink);border-color:var(--ink);box-shadow:0 0 0 4px rgba(20,19,17,.09)}
+  .nd.gap:after{border-color:#d8cdbd;border-style:dashed}
+  .nd.gap b{color:var(--mute)}
+  .nolink .chev{display:none}
+  .nd:not(.nolink)>div>b:after,.ship:not(.nolink) .nm:after,.person:not(.nolink) b:after{content:"›";color:#c3bdaf;font-weight:400;margin-left:6px;font-size:14px}
+  .nd .flag{font-size:9.5px;font-weight:700;color:var(--ask);background:#fbf1e2;border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:1px}
+
+  /* 機体 */
+  .fleet{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .ship{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 12px;box-shadow:var(--sh);cursor:pointer;
+        display:flex;flex-direction:column;gap:5px}
+  .ship .nm{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:6px;letter-spacing:-.01em}
+  .ship .st{font-size:9.5px;font-weight:700;border-radius:5px;padding:2px 7px;align-self:flex-start;letter-spacing:.03em}
+  .st.ok{background:#e4f0ea;color:var(--ai)} .st.warn{background:#fbeddc;color:var(--ask)} .st.wait{background:#e6ecf5;color:var(--think)}
+  .ship small{font-size:10.5px;color:var(--mute);line-height:1.55}
+  .ship .n{color:var(--ink2);font-weight:600}
+
+  /* カード共通 */
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:4px 13px;box-shadow:var(--sh)}
+  .it{display:grid;grid-template-columns:22px 1fr auto;gap:11px;padding:11px 0;border-top:1px solid var(--line);align-items:start}
+  .it:first-child{border-top:0}
+  .ic{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:9.5px;color:#fff;font-weight:700;margin-top:1px}
+  .ic.ask{background:var(--ask)}.ic.ai{background:var(--ai)}.ic.think{background:var(--think)}
+  .ic.done{background:var(--gone)}.ic.out{background:var(--out)}.ic.do{background:var(--ink)}
+  .it .t{font-size:13.5px;line-height:1.5;font-weight:500}
+  .it .w{font-size:11px;color:var(--mute);margin-top:3px;line-height:1.55}
+  .it .w b{color:var(--ink2);font-weight:600}
+  .it .b{font-size:11.5px;color:var(--ink2);margin-top:3px;line-height:1.55}
+  .it .b:before{content:"→ ";color:var(--mute)}
+  .mini{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:5px 9px;font-size:11px;cursor:pointer;color:var(--ink2);white-space:nowrap}
+  .mini.p{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .btns{display:flex;gap:6px;margin-top:8px}
+  .btns button{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:8px;font-size:12px;cursor:pointer;font-weight:500;color:var(--ink2)}
+  .btns button.p{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .sub{font-size:10px;letter-spacing:.13em;color:var(--mute);font-weight:700;padding:10px 0 0}
+
+  /* AI待ち */
+  .wait{background:#f2f5fa;border:1px solid #dde5f0;border-radius:var(--r);padding:12px 13px;cursor:pointer}
+  .wait h4{margin:0 0 7px;font-size:11px;letter-spacing:.13em;color:var(--think);font-weight:700;display:flex;justify-content:space-between}
+  .wait .q{font-size:12.5px;padding:8px 0;border-top:1px solid #e2e9f3;display:flex;justify-content:space-between;gap:10px;align-items:center;line-height:1.5}
+  .wait .q:first-of-type{border-top:0}
+  .wait .q b{font-size:10.5px;color:var(--think);white-space:nowrap}
+  .wait .more{font-size:11px;color:var(--think);padding-top:8px;border-top:1px solid #e2e9f3;font-weight:600}
+
+  /* 残量 */
+  .free{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:13px;box-shadow:var(--sh);cursor:pointer}
+  .free .h{display:flex;justify-content:space-between;align-items:baseline}
+  .free .h span{font-size:11px;color:var(--mute);letter-spacing:.04em}
+  .free .h b{font-size:27px;letter-spacing:-.03em;font-weight:700}
+  .free .h b i{font-style:normal;font-size:12px;font-weight:600;color:var(--mute);margin-left:2px}
+  .bar2{display:flex;height:9px;border-radius:5px;overflow:hidden;margin:9px 0 7px;gap:1.5px}
+  .bar2 i{display:block;height:100%}
+  .leg{display:flex;flex-wrap:wrap;gap:9px;font-size:10.5px;color:var(--mute)}
+  .leg b{color:var(--ink)}
+  .leg s{text-decoration:none;display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px}
+  .free .note{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--mute);line-height:1.7}
+  .free .note b{color:var(--ink)} .free .note em{font-style:normal;color:var(--home);font-weight:600}
+
+  /* 終わった */
+  .done{border:1px dashed #dad5c9;border-radius:var(--r);padding:4px 13px}
+  .done .it{border-color:#e4e0d6}
+  .done .t{color:var(--gone);text-decoration:line-through;text-decoration-thickness:1px;font-weight:400}
+
+  .foot{text-align:center;padding:20px 0 6px;font-size:10.5px;color:var(--mute);line-height:1.7}
+
+  /* 人 */
+  .people{display:flex;flex-direction:column;gap:7px}
+  .person{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:10px 12px;display:flex;justify-content:space-between;
+    align-items:center;gap:10px;box-shadow:var(--sh);cursor:pointer}
+  .person b{font-size:13.5px;display:block}
+  .person small{display:block;font-size:10.5px;color:var(--mute);line-height:1.55;margin-top:2px}
+  .person small em{font-style:normal;color:var(--ask);font-weight:600}
+  .person .cnt{font-size:10.5px;color:var(--mute);white-space:nowrap;text-align:right}
+  .person .cnt b{font-size:16px;color:var(--ink);display:block;line-height:1.1}
+  .person.warn{border-color:#e9cfc6;background:#fdf8f6}
+  .person.gen{border-style:dashed;background:var(--soft)}
+
+  /* 配分 */
+  .brow{display:grid;grid-template-columns:44px 1fr 40px;gap:10px;align-items:center;padding:8px 0}
+  .brow .nm2{font-size:12.5px;font-weight:600}
+  .bar3{height:10px;background:var(--soft);border-radius:5px;position:relative;overflow:visible}
+  .bar3 i{display:block;height:100%;border-radius:5px}
+  .bar3 em{position:absolute;top:-4px;bottom:-4px;width:1.5px;background:var(--ink);opacity:.45}
+  .brow .pc2{font-size:12px;color:var(--mute);text-align:right}
+
+  /* 裏側 */
+  .lg .r3{display:grid;grid-template-columns:66px 1fr;gap:9px;padding:10px 0;border-top:1px solid var(--line);font-size:12px;line-height:1.55}
+  .lg .r3:first-child{border-top:0}
+  .lg .k2{font-size:9.5px;color:var(--lask,#6e6759);border:1px solid var(--line);border-radius:5px;padding:2px 5px;text-align:center;
+    background:var(--soft);height:fit-content;color:#6e6759;font-weight:700}
+  .lg .s2{color:var(--mute);font-size:11px;display:block;margin-top:2px}
+  .lg .s2.up{color:var(--ink);font-weight:600} .lg .s2.done{color:var(--ai);font-weight:600} .lg .s2.no{color:var(--home)}
+
+  /* detail */
+  .back{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--mute);padding:12px 2px 6px;cursor:pointer;font-weight:500}
+  .dh{padding:2px 2px 14px}
+  .dh .k{font-size:10.5px;letter-spacing:.1em;color:var(--mute);font-weight:700}
+  .dh h2{font-size:21px;line-height:1.45;margin:8px 0 8px;font-weight:700;letter-spacing:-.02em}
+  .dh .meta{font-size:11.5px;color:var(--mute);line-height:1.7}
+  .kv{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:3px 13px;box-shadow:var(--sh)}
+  .kv .r2{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.6}
+  .kv .r2:first-child{border-top:0}
+  .kv .r2 .k{color:var(--mute);font-size:11.5px}
+  .why{background:var(--soft);border:1px solid var(--line);border-left:3px solid var(--ink);border-radius:0 12px 12px 0;padding:11px 13px;font-size:12.5px;line-height:1.8;color:var(--ink2)}
+  .why b{color:var(--ink)}
+  .who{display:flex;gap:8px;margin-top:10px}
+  .who button{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:11px 8px;cursor:pointer;
+    display:flex;flex-direction:column;gap:3px;align-items:center;box-shadow:var(--sh)}
+  .who button b{font-size:12.5px;font-weight:600}
+  .who button small{font-size:10px;color:var(--mute);text-align:center;line-height:1.4}
+  .who button.p{background:var(--ink);border-color:var(--ink)}
+  .who button.p b{color:#fff} .who button.p small{color:#a9a396}
+  .tl{position:relative;padding-left:16px;margin-top:4px}
+  .tl:before{content:"";position:absolute;left:3.5px;top:8px;bottom:8px;width:1.5px;background:var(--line)}
+  .tl .e{position:relative;padding:8px 0;font-size:12px;line-height:1.6}
+  .tl .e:before{content:"";position:absolute;left:-16px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--line)}
+  .tl .e.hot:before{background:var(--ink)}
+  .tl .e span{color:var(--mute);font-size:11px;display:block}
+
+  /* notes */
+  .doc h1{font-size:16px;margin:0 0 4px;letter-spacing:-.01em}
+  .doc h1 span{font-size:12px;color:var(--mute);font-weight:400;margin-left:8px}
+  .doc h2{font-size:11.5px;letter-spacing:.12em;color:var(--mute);font-weight:700;margin:24px 0 8px}
+  .doc p{font-size:13px;line-height:1.85;color:var(--ink2);margin:0 0 13px}
+  .doc p b{color:var(--ink)}
+  .doc .box{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px;box-shadow:var(--sh)}
+  .doc .box h3{margin:0 0 5px;font-size:13.5px}
+  .doc .box p{margin:0;font-size:12.5px}
+  .doc .me{background:var(--soft);border-left:3px solid var(--ink);padding:11px 14px;border-radius:0 12px 12px 0;font-size:12.5px;line-height:1.85}
+  .doc ol{font-size:13px;line-height:1.9;color:var(--ink2);padding-left:20px;margin:0 0 13px}
+  .doc code{background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:11.5px}
+
+  /* --- 興味チップ --- */
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .ch{font-size:11.5px;padding:6px 10px;border-radius:20px;background:var(--paper);border:1px solid var(--line);color:var(--ink2)}
+  .ch.w{border-color:#cfdcea;background:#f2f6fb;color:#2f5d92}
+  .ch.ho{border-color:#c9e2d7;background:#f1f8f5;color:#1c7355}
+  .ch.he{border-color:#eddcbb;background:#fbf6ec;color:#8f5c07}
+  .ask2{color:var(--mute);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  /* --- 止まっているもの --- */
+  .stuck{display:flex;flex-direction:column;gap:8px}
+  .st{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
+  .sh{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+  .sh b{font-size:14px}
+  .sw{font-size:11.5px;color:var(--mute);line-height:1.6}
+  .sr{font-size:11.5px;color:var(--ink2);line-height:1.65;margin-top:6px;padding-top:7px;border-top:1px dashed var(--line)}
+  .sr em{font-style:normal;color:var(--mute)}
+  .sb{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .rl{font-size:9.5px;padding:2px 7px;border-radius:20px;font-weight:600;white-space:nowrap}
+  .rl.w{background:#e8eff7;color:#2f5d92}.rl.ho{background:#e6f2ec;color:#1c7355}
+  .rl.dr{background:#eee6f7;color:#67399c}.rl.he{background:#f7eeda;color:#8f5c07}
+  .rl.im{background:#f0e3d6;color:#8a5220}.rl.co{background:#e6f2ec;color:#1c7355}
+  .rl.se{background:#eee6f7;color:#67399c}.rl.cp{background:#e8eff7;color:#2f5d92}
+  .rl.fa{background:#f7e3de;color:#b0402b}.rl.ey{background:#ece9e1;color:#6b6659}
+  .pl{text-decoration:line-through;text-decoration-color:#cfcabc}
+  /* --- つまみ --- */
+  .legx{display:flex;gap:14px;font-size:10px;color:var(--mute);margin-bottom:9px;flex-wrap:wrap}
+  .legx s{display:inline-block;width:14px;height:8px;border-radius:2px;margin-right:5px;vertical-align:-1px;text-decoration:none}
+  .legx s.k1{background:#c9c4b6}.legx s.k2{width:2px;height:11px;background:var(--ink);opacity:.5;border-radius:0}
+  .srow{display:grid;grid-template-columns:38px 1fr 42px;gap:9px;align-items:center;padding:7px 0}
+  .srow .nm3{font-size:12.5px;font-weight:600}
+  .track{position:relative;height:22px}
+  .track .act{position:absolute;top:7px;height:8px;border-radius:4px;opacity:.5}
+  .track .want{position:absolute;top:2px;width:2px;height:18px;background:var(--ink);opacity:.45}
+  .track input{-webkit-appearance:none;appearance:none;width:100%;background:transparent;position:absolute;top:0;height:22px;margin:0}
+  .track input::-webkit-slider-runnable-track{height:8px;margin-top:7px;background:var(--soft);border-radius:4px}
+  .track input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--paper);
+    border:2px solid var(--ink);margin-top:-5px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+  .srow .pc3{font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
+  .srow .pc3 u{text-decoration:none;font-size:10px;color:var(--mute);display:block;line-height:1.2}
+  .tot{font-size:11px;color:var(--mute);text-align:right;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+  .tot #totw{color:var(--ask);font-weight:600}
+  .prev{background:var(--ink);color:#f4f2ec;border-radius:16px;padding:13px 15px;margin-top:9px}
+  .prev .ph{font-size:11.5px;color:#a9a496;margin-bottom:9px}
+  .prev .ph b{color:#fff}
+  .prev .pi{font-size:13px;line-height:1.6;padding:7px 0;border-bottom:1px solid #2b2926;display:flex;gap:8px}
+  .prev .pi:last-child{border-bottom:0}
+  .prev .pi s{color:#7c776b;text-decoration-color:#4a4740}
+  .prev .pi u{text-decoration:none;color:#8f8a7c;font-size:10.5px;display:block;margin-top:2px}
+  .prev .pn{font-size:11px;color:#a9a496;margin-top:9px;line-height:1.7}
+  .prev .pn b{color:#fff}
+  .ask3{padding:13px 15px}
+  .ask3 .q{font-size:14px;line-height:1.6}
+  .ask3 .n{font-size:10.5px;color:var(--mute);margin-top:9px;line-height:1.7}
+  /* --- 人：変化 --- */
+  .chg{display:flex;flex-direction:column;gap:7px}
+  .cg{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:10px 12px;display:flex;gap:9px;align-items:flex-start}
+  .cg b{font-size:13.5px;display:block}
+  .cg small{display:block;font-size:10.5px;color:var(--mute);line-height:1.55;margin-top:2px}
+  .cg small em{font-style:normal;color:var(--ink2);font-weight:600}
+  .cd{font-size:9.5px;padding:3px 7px;border-radius:20px;background:#e6f2ec;color:#1c7355;font-weight:600;white-space:nowrap;margin-top:2px}
+  .cd.q{background:#f7eeda;color:#8f5c07}
+  .cg.q{border-color:#eddcbb;background:#fdfaf3}
+  .rrow{display:grid;grid-template-columns:62px 66px 1fr;gap:9px;align-items:center;padding:6px 0}
+  .rb{height:7px;background:var(--soft);border-radius:4px}
+  .rb i{display:block;height:100%;border-radius:4px;background:var(--ink);opacity:.8}
+  .rrow small{font-size:10.5px;color:var(--mute);line-height:1.4}
+  .rn{font-size:11.5px;color:var(--ink2);line-height:1.75;margin-top:8px;padding-top:9px;border-top:1px dashed var(--line)}
+
+  .boot{padding:12px 14px}
+  .bt{font-size:12.5px;line-height:1.75;color:var(--ink2);padding-bottom:10px;border-bottom:1px dashed var(--line)}
+  .bl{display:flex;gap:10px;padding:9px 0;align-items:flex-start}
+  .bn{width:19px;height:19px;border-radius:50%;background:var(--ink);color:#fff;font-size:10.5px;display:flex;
+    align-items:center;justify-content:center;flex:0 0 auto;margin-top:1px}
+  .bl b{font-size:13px;display:block}
+  .bl small{display:block;font-size:10.5px;color:var(--mute);line-height:1.6;margin-top:3px}
+  .bl small em{font-style:normal;color:var(--ink2);font-weight:600}
+  .bq{background:var(--soft);border-radius:12px;padding:11px 12px;margin-top:6px}
+  .bqq{font-size:12.5px;line-height:1.6;margin-bottom:8px}
+  .bn2{font-size:11px;color:var(--mute);line-height:1.75;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .fut{display:flex;flex-direction:column;gap:7px}
+  .fi{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:10px 12px;display:flex;gap:9px;align-items:flex-start}
+  .fi b{font-size:13.5px;display:block}
+  .fi small{display:block;font-size:10.5px;color:var(--mute);line-height:1.6;margin-top:3px}
+  .fi small em{font-style:normal;color:var(--ink2);font-weight:600}
+  .ft{font-size:9.5px;padding:3px 7px;border-radius:20px;background:#ece9e1;color:#6b6659;font-weight:600;white-space:nowrap;margin-top:2px}
+  .st.life{border-color:#d8d3c5;background:#fbfaf6}
+</style>
+</head>
+<body>
+<div class="stage">
+
+<div class="phone"><div class="scr">
+  <div class="notch"><i></i></div>
+  <div class="bar">
+    <div class="brand">Lask<small>25歳 · 使い始めて90日</small></div>
+    <div class="acts"><button class="icb">⌕</button><button class="icb">☰</button><button class="talk">🎙&nbsp;喋る</button></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="on"><i>☀︎</i>今日</button><button><i>⌇</i>なりたい</button><button><i>◍</i>人</button>
+    <button><i>◔</i>配分</button><button><i>◎</i>なぜ</button>
+  </div>
+  <div class="tabhint">木のいちばん上が「夢」ではなく「なりたい状態」になるだけです</div>
+  <div class="view" id="view">
+
+  <div class="page on">
+    <div class="hero">
+      <div class="day">おはようございます · 今日やることは2つ</div>
+      <h1>今日は <b>19:00</b> の<br>飲み会で <em>「誰に教わるか」</em><br>を1人決めれば勝ちです。</h1>
+      <div class="sub">来る5人のうち1人が、あなたが3ヶ月前に「やってみたい」と言った<b>データ分析を仕事にしている人</b>です。あなたはまだ、その人が来ることを知りません。</div>
+      <div class="acts2"><button class="b1">わかった</button><button class="b2">違う</button></div>
+      <div class="src">◎ 一言は <b>Slackの参加者リスト</b>と <b>あなたの5/12の発言</b>から。<br>推測は使っていません。</div>
+    </div>
+
+    <div class="sec"><h4>今日、あなたがやること</h4><span>代わりがいないもの</span></div>
+    <div class="mine">
+      <div class="row"><i class="cb"></i>
+        <div><div class="t"><span class="tag work">仕事</span>19:00 の会で、◯◯さんに「どう始めたか」を聞く</div>
+          <div class="b">3ヶ月動いていない「データ分析ができるようになる」の、最初の一手</div>
+          <div class="w">5分 · 聞くことは Lask が3つ用意しました</div></div></div>
+      <div class="row"><i class="cb"></i>
+        <div><div class="t"><span class="tag dream">なりたい</span>先週 作ったものを、1人に見せる</div>
+          <div class="b">作ったのに誰にも見せていないものが3つ溜まっています</div>
+          <div class="w">10分 · 見せる相手の候補2人</div></div></div>
+      <div class="lim">今日は2つだけです。3つ目は明日に回しました。</div>
+    </div>
+
+    <div class="sec"><h4>あなたが今、伸びているもの</h4><span>入力していません · 行動から</span></div>
+    <div class="card" style="padding:11px 13px">
+      <div class="rrow"><span class="rl im">書く</span><div class="rb"><i style="width:71%"></i></div><small>90日で 41本。3ヶ月前の倍</small></div>
+      <div class="rrow"><span class="rl co">作る</span><div class="rb"><i style="width:58%"></i></div><small>小さいものを最後まで作り切れる</small></div>
+      <div class="rrow"><span class="rl se">数字を読む</span><div class="rb"><i style="width:22%"></i></div><small>読む機会自体がまだ少ない</small></div>
+      <div class="rrow"><span class="rl cp">人に聞く</span><div class="rb"><i style="width:14%"></i></div><small><b>ここが一番の伸びしろです</b></small></div>
+      <div class="rn">◎ あなたが自己申告したものは1つもありません。<b>書いたもの・作ったもの・会った人から出しています。</b><br>「人に聞く」が14%なのに、90日で動いたものは<b>すべて人から来ていました。</b>今日の①がそれです。</div>
+    </div>
+
+    <div class="sec"><h4>なりたい状態</h4><span>まだ言葉になっていなくていい</span></div>
+    <div class="fut">
+      <div class="fi"><span class="ft">10年</span><div><b>「自分の名前で仕事が来る人になりたい」</b>
+        <small>初回に答えた1文。<em>3ヶ月、一度も変えていません</em></small></div></div>
+      <div class="fi"><span class="ft">分解</span><div><b>そのために要ると Lask が見ているもの</b>
+        <small>作れる（58%）／説明できる（<em>まだ測れていません</em>）／頼まれる関係を持つ（14%）
+        <br>◎ この分解はあなた専用ではありません。<b>同じ1文を書いた人 2,140人が、実際に何をして辿り着いたか</b>から出しています</small></div></div>
+      <div class="fi"><span class="ft">軌跡</span><div><b>あなたが「憧れる」と書いた3人</b>
+        <small>3人とも <em>26〜28歳の時に、社外に出して恥をかいています</em>。あなたはまだ社内だけです
+        <br>◎ 本人の公開情報から。推測ではありません</small>
+        <div class="sb"><button class="mini p">1本 外に出す</button><button class="mini">まだいい</button></div></div></div>
+    </div>
+
+    <div class="sec"><h4>会うと変わる人</h4><span>あなたに効く型：実践者</span></div>
+    <div class="people">
+      <div class="person gen"><div><b>データ分析 → ◯◯さん</b><small>今夜19:00 に来ます · 欠けている役割：<em>実践者</em></small></div>
+        <span class="cnt"><button class="mini p">聞くこと3つ</button></span></div>
+      <div class="person gen"><div><b>英語 → 社内に2人</b><small>週1で話す相手。<em>教わるのではなく、使う相手</em>が要ります</small></div>
+        <span class="cnt"><button class="mini">つなぐ</button></span></div>
+      <div class="person gen"><div><b>「説明できる」 → ？</b><small>連絡先に、人前で話している人がいません → 外の人につなぐ</small></div>
+        <span class="cnt"><button class="mini">探す</button></span></div>
+    </div>
+    <div class="src" style="margin:8px 4px 0">◎ 25歳のボトルネックは能力ではなく<b>「できると思えていないこと」</b>でした。だから先生より先に、<b>すでにやっている人</b>を出します。</div>
+
+    <div class="sec"><h4>あなた抜きで進んだもの</h4><span>7件</span></div>
+    <div class="list">
+      <div class="it"><i class="ic ai">AI</i><div><div class="t">今週の議事録7本 → 3行に要約して共有済み</div><div class="w">戻った時間 4.2h</div></div></div>
+      <div class="it"><i class="ic ai">AI</i><div><div class="t">「読む」と言った記事12本 → 3本に絞りました</div><div class="w">残り9本は捨てました。あとで出しません</div></div></div>
+      <div class="it"><i class="ic ask">→</i><div><div class="t">後輩に頼んだ資料 → 昨日届いています</div><div class="w">見るのは結果だけでいい</div></div></div>
+    </div>
+
+    <div class="free">
+      <div class="h"><span>戻ってきた自由</span><b>4.2<i>h/週</i></b></div>
+      <div class="note">45歳のあなたと違って、25歳に戻るのは<b>お金ではなく時間です。</b>その時間を何に使ったかを、Lask は毎週1回だけ聞きます。</div>
+    </div>
+
+    <div class="foot">🎙 思ったことを喋る。それ以外の操作はありません。<br>Lask はあなたと同じ速さで忘れます。</div>
+  </div>
+
+  </div>
+</div></div>
+
+<aside class="notes">
+  <h2>25歳が使ったら</h2>
+  <p><b>機構は1つも変えていません。</b>木のいちばん上が「夢（上場・海外に住む）」から「なりたい状態（自分の名前で仕事が来る）」に入れ替わるだけです。スキルは独立した機能ではなく、<b>なりたい状態の子タスク</b>として出ます。チェロが弾けるようになるのと、データ分析ができるようになるのは、構造上まったく同じものです。</p>
+  <h3>領域は5本のまま</h3>
+  <p>「成長」を6本目の領域にはしません。つまみが増えるとシンプルの原則が壊れるからです。スキルは手段であって目的ではないので、夢にぶら下がるのが構造的に正しい位置です。</p>
+  <h3>45歳との唯一の違い</h3>
+  <p>45歳は夢が41件あって、動かす一手がない。<b>25歳は夢が空白で、埋める材料がない。</b>だから25歳版だけ、他人の軌跡を使います。「同じ1文を書いた2,140人が実際に何をしたか」「憧れると書いた3人が26〜28歳に何をしたか」。個人のログだけでは25歳は動きません。</p>
+  <h3>能力は自己申告させない</h3>
+  <p>書いたもの・作ったもの・会った人から推定します。自己申告は続かないし、当たりません。「人に聞く14%」は本人が一番気づいていない数字で、しかも90日で動いたものは全部そこから来ていた ── これが「本人すら気づいていないタスク」の25歳版です。</p>
+  <h3>ここが世界で戦える理由</h3>
+  <p>45歳向けは秋好さん個人のログで成立しますが、25歳向けは<b>他人の軌跡という集合知</b>が要ります。使う人が増えるほど当たるようになる。タスク管理で規模が効くのは、たぶんここだけです。</p>
+</aside>
+
+</div>
+</body>
+</html>
