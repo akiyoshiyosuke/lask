@@ -12,6 +12,7 @@
 2. 作業
 3. **終わったら**: `git add <ファイル名明示>` → commit → `git push -u origin <branch>`。未 push を残して終わらない
 - Cowork の VM はセッションごとに変わるので、`git pull` が鍵エラーになったら `bash scripts/setup.sh` を叩き直す（`core.sshCommand` の絶対パスを今のセッションに直す）＋ `ssh-keyscan github.com >> ~/.ssh/known_hosts`
+- Cowork の VM はファイルを削除できないので git が `.git/index.lock` を消せず残ることがある → 次の commit 前に `mv .git/index.lock .git/index.lock.stale`（Mac 側では `rm .git/*.lock*` で掃除）
 - 接続フォルダ名は Unicode 正規化の違いで `cd "$HOME/mnt/究極の…"` が通らないことがある → `cd "$HOME"/mnt/*/` で入る
 
 ## 構成
