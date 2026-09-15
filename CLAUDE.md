@@ -11,7 +11,8 @@
 1. **始める前**: `git switch main && git pull --rebase` → `git switch -c feat/<やること>`（docs だけなら `docs/<やること>`）
 2. 作業
 3. **終わったら**: `git add <ファイル名明示>` → commit → `git push -u origin <branch>`。未 push を残して終わらない
-- Cowork の VM はセッションごとに変わるので、`git pull` が鍵エラーになったら `bash scripts/setup.sh` を叩き直す（`core.sshCommand` の絶対パスを今のセッションに直す）＋ `ssh-keyscan github.com >> ~/.ssh/known_hosts`
+- Cowork の VM はセッションごとに変わるので、**セッション開始時にまず `bash scripts/setup.sh`**（鍵を `~/.ssh/config` に登録し直す。VM は `GIT_SSH_COMMAND` を環境変数で固定していて `core.sshCommand` は効かない）
+- 作業フォルダは `~/claudecode-2/LASK`（2026-09-15〜）。`~/ClaudeCode/究極のタスク管理サービス` は旧クローン。**読むだけ、書かない**（鍵 `.gitsecrets/` のコピー元）
 - Cowork の VM はファイルを削除できないので git が `.git/index.lock` を消せず残ることがある → 次の commit 前に `mv .git/index.lock .git/index.lock.stale`（Mac 側では `rm .git/*.lock*` で掃除）
 - 接続フォルダ名は Unicode 正規化の違いで `cd "$HOME/mnt/究極の…"` が通らないことがある → `cd "$HOME"/mnt/*/` で入る
 
