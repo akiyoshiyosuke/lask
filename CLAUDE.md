@@ -23,7 +23,9 @@ docs/ログ.md        企画書に無い本人発言と決定（憲法の層な�
 docs/10-新環境セットアップ.md  別マシン・別Claudeから入る時の手順書（clone/pull/ブランチ/push/認証）
 ui/lask-home.html   本体。6タブ（今日/夢/人/配分/自動/Laskとは）＋詳細ページ。単一HTML・外部依存なし。幅600px以下 or ホーム画面起動で「アプリモード」（枠なし・下タブ）
 ui/manifest.webmanifest, ui/sw.js, ui/icon-*.png  PWA 用（合言葉なしで配ってよい唯一のファイル群）
-server/index.js     極小サーバー（Node 標準のみ・依存ゼロ）。合言葉→Cookie 90日／ui/ を配る／/api は②で生やす。`npm start`
+server/index.js     極小サーバー（依存は pg だけ）。合言葉→Cookie 90日／ui/ を配る／`/api/op` `/api/state` `/api/ops` `/api/health`
+server/db.js        Lask 自身の DB（Railway Postgres）。ops（操作履歴・追記のみ）と state（いまの状態）だけ。他OSの DB には書かない
+server/mothership.js 未転記の ops を秋好OS の 📦母艦 に「秋好の入力」として転記（NOTION_TOKEN が要る。view は転記しない）
 railway.json        Railway の設定（main push で自動デプロイ）。環境変数は .env.example
 ui/lask-25.html     25歳が使った場合の版（機構は同じ、木の頂点が「なりたい状態」）
 ui/lask-board-demo.html  取締役会向けデモ（2026-09-15）。実データ・スマホ幅専用・6タブ（今日/夢/人/配分/自動/Laskとは）。「Laskとは」LP は恒久（本人指示 9/14）。デモ本体を消す時も LP は残す
@@ -36,7 +38,7 @@ scripts/shot.mjs    スクショ生成（Playwright）
 ## 開発
 - ビルド不要。`ui/lask-home.html` をブラウザで直接開く（幅を 600px 以下にするとアプリモード）
 - サーバーを手元で: `LASK_PASSCODE=xxxx npm start` → http://localhost:3000 （合言葉画面 → `/`）。`/25` `/board` も配る
-- 本番: https://lask-production.up.railway.app （Railway プロジェクト `accomplished-encouragement`・サービス `lask`。GitHub `akiyoshiyosuke/lask` に接続、push で自動デプロイ、ポート 8080）。Variables に `LASK_PASSCODE`（合言葉。リポジトリに書かない）。非公開・合言葉つき・noindex
+- 本番: https://lask-production.up.railway.app （Railway プロジェクト `accomplished-encouragement`・サービス `lask`。GitHub `akiyoshiyosuke/lask` に接続、push で自動デプロイ、ポート 8080）。Variables に `LASK_PASSCODE`（合言葉）・`DATABASE_URL`（Postgres 参照）・`NOTION_TOKEN`（母艦転記）。値はリポジトリに書かない。非公開・合言葉つき・noindex
 - 本番に繋ぐブランチは Railway の Settings → Source → Branch。2026-09-20 時点は `feat/app-pwa`（main マージ後に `main` へ戻す）
 - スクショ: `npm i && npx playwright install chromium` → `npm run shot`（全タブ）／`npm run shot -- ppl t1`（指定）→ `shots/<id>.png`
   - `SCALE`（既定1.24）で解像度、`CHROMIUM` で既存Chromiumのパスを指定できる
