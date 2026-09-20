@@ -1,6 +1,6 @@
 # Lask（究極のタスク管理サービス）
 
-企画＋UIモックのリポジトリ。実装コードはまだ無い。設計は「企画書」と「HTMLモック」の2本立てで、両方を更新し続ける。
+企画＋UI＋極小サーバーのリポジトリ。2026-09-20 に「サービスとして出す」が大ゴールになり、①iPhone アプリ（PWA）→ ②実データ → ③意味があるかの判定、の順で進める（`docs/ログ.md` 2026-09-20）。設計は「企画書」と「HTML」の2本立てで、両方を更新し続ける。
 
 **作業を始める前に `docs/企画書.md` と `docs/ログ.md` を読む。** 思想・原則・決定事項はすべてここにある。
 
@@ -13,6 +13,7 @@
 3. **終わったら**: `git add <ファイル名明示>` → commit → `git push -u origin <branch>`。未 push を残して終わらない
 - Cowork の VM はセッションごとに変わるので、`git pull` が鍵エラーになったら `bash scripts/setup.sh` を叩き直す（`core.sshCommand` の絶対パスを今のセッションに直す）＋ `ssh-keyscan github.com >> ~/.ssh/known_hosts`
 - Cowork の VM はファイルを削除できないので git が `.git/index.lock` を消せず残ることがある → 次の commit 前に `mv .git/index.lock .git/index.lock.stale`（Mac 側では `rm .git/*.lock*` で掃除）
+- 同じ理由で **Cowork の VM では `git switch`/`checkout`/`reset --hard` で作業ファイルを差し替えられない**（unlink できずに失敗し、index だけ壊れる）。別ブランチの先端から始めたい時は `git switch -c <new>`（今のコミットのまま）→ `git update-ref refs/heads/<new> <base>` → `git read-tree HEAD` で、作業ツリーを触らずに枝と index だけ合わせる（作業ツリーが base と同じ内容である時だけ使う）
 - 接続フォルダ名は Unicode 正規化の違いで `cd "$HOME/mnt/究極の…"` が通らないことがある → `cd "$HOME"/mnt/*/` で入る
 
 ## 構成
@@ -20,7 +21,10 @@
 docs/企画書.md      企画書（思想・発生エンジン・原則・ビジネスモデル・UI変遷。§1〜§17）
 docs/ログ.md        企画書に無い本人発言と決定（憲法の層など）。新しい発言・決定は末尾に追記
 docs/10-新環境セットアップ.md  別マシン・別Claudeから入る時の手順書（clone/pull/ブランチ/push/認証）
-ui/lask-home.html   本体モック。5タブ＋詳細ページ。単一HTML・外部依存なし
+ui/lask-home.html   本体。6タブ（今日/夢/人/配分/自動/Laskとは）＋詳細ページ。単一HTML・外部依存なし。幅600px以下 or ホーム画面起動で「アプリモード」（枠なし・下タブ）
+ui/manifest.webmanifest, ui/sw.js, ui/icon-*.png  PWA 用（合言葉なしで配ってよい唯一のファイル群）
+server/index.js     極小サーバー（Node 標準のみ・依存ゼロ）。合言葉→Cookie 90日／ui/ を配る／/api は②で生やす。`npm start`
+railway.json        Railway の設定（main push で自動デプロイ）。環境変数は .env.example
 ui/lask-25.html     25歳が使った場合の版（機構は同じ、木の頂点が「なりたい状態」）
 ui/lask-board-demo.html  取締役会向けデモ（2026-09-15）。実データ・スマホ幅専用・6タブ（今日/夢/人/配分/自動/Laskとは）。「Laskとは」LP は恒久（本人指示 9/14）。デモ本体を消す時も LP は残す
 scripts/shot.mjs    スクショ生成（Playwright）
@@ -30,7 +34,9 @@ scripts/shot.mjs    スクショ生成（Playwright）
 - 人に見せる版が要るときは別ファイルで作り、渡し終わったら消す（本体に取り込まない）
 
 ## 開発
-- ビルド不要。`ui/lask-home.html` をブラウザで直接開く
+- ビルド不要。`ui/lask-home.html` をブラウザで直接開く（幅を 600px 以下にするとアプリモード）
+- サーバーを手元で: `LASK_PASSCODE=xxxx npm start` → http://localhost:3000 （合言葉画面 → `/`）。`/25` `/board` も配る
+- 本番: Railway（GitHub `akiyoshiyosuke/lask` の main）。Variables に `LASK_PASSCODE`。URL は Railway のドメイン（非公開・合言葉つき・noindex）
 - スクショ: `npm i && npx playwright install chromium` → `npm run shot`（全タブ）／`npm run shot -- ppl t1`（指定）→ `shots/<id>.png`
   - `SCALE`（既定1.24）で解像度、`CHROMIUM` で既存Chromiumのパスを指定できる
   - 対象は `lask-home.html` のみ（`lask-25.html` は別構造で `#view` にJS描画）

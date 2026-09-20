@@ -2,8 +2,16 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lask — トップページ（統合版）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Lask">
+<meta name="theme-color" content="#e9e8e3">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="icon" href="/icon-192.png">
+<title>Lask</title>
 <style>
   :root{
     --bg:#e9e8e3; --paper:#fffefb; --ink:#141311; --ink2:#3d3a34; --mute:#8b877d; --line:#e8e5dd; --soft:#f6f4ee;
@@ -425,6 +433,74 @@
   .kz .lv.m .lb{background:#ece9e1;color:var(--ink2)}
   .kz .lt{font-size:12.5px;line-height:1.7}
   .kz .lt small{display:block;color:var(--mute);font-size:10.5px;line-height:1.6}
+
+  /* ---------- v4 合流：夢の絞り込み・LP・トースト ---------- */
+  .mi.sel{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+  .mi.dim{opacity:.4}
+  .gone{display:none!important}
+  .dlist{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);overflow:hidden}
+  .dl{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 14px;border-top:1px solid var(--line);align-items:center}
+  .dl:first-child{border-top:0}
+  .dl .t{font-size:13.5px;font-weight:600;line-height:1.45}
+  .dl .m{font-size:11px;color:var(--mute);margin-top:2px}
+  .dst{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+  .dst.run{background:#dff0e8;color:var(--ai)}.dst.stop{background:#f6e3df;color:var(--home)}.dst.keep{background:#f7ecd8;color:var(--health)}.dst.cand{background:var(--soft);color:var(--mute)}
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 84px);transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;z-index:9;max-width:340px;text-align:center}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .lp .num{font-size:11px;letter-spacing:.2em;color:var(--mute);font-weight:800}
+  .lp .big{width:100%;border:0;background:var(--ink);color:#fff;border-radius:14px;padding:15px;font-size:15px;font-weight:700;margin-top:14px;box-shadow:0 6px 18px -10px rgba(20,19,17,.6);cursor:pointer}
+.lp{margin:0 -14px;padding:0 0 30px}
+.lph{background:var(--ink);color:#fff;padding:36px 24px 30px}
+.lp .eyebrow{font-size:11px;letter-spacing:.2em;color:#b3ada0;font-weight:700}
+.lph h1{font-size:26px;line-height:1.4;margin:14px 0 14px;letter-spacing:-.02em}
+.lph h1 em{font-style:normal;color:#f2e2b8}
+.lph p{font-size:14px;line-height:1.9;color:#cfc9bc;margin:0 0 20px}
+.lp .pct{display:grid;grid-template-columns:1fr 2fr;gap:6px}
+.lp .pct>div{border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;gap:4px}
+.lp .pct b{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.lp .pct span{font-size:10.5px;line-height:1.5;opacity:.85}
+.lp .pax{background:#3d3a34}.lp .pbx{background:#67399c}
+.lps{padding:34px 24px 6px;border-top:1px solid var(--line)}
+.lps.dark{background:#e0e8fa;margin:20px 0 0;border:0}
+.lp .num{font-size:11px;letter-spacing:.2em;color:var(--mute);font-weight:800}
+.lps h2{font-size:21px;line-height:1.45;margin:8px 0 12px;letter-spacing:-.02em}
+.lps p{font-size:14px;line-height:1.9;color:var(--ink2);margin:0 0 14px}
+.lps p.sm{font-size:12.5px;color:var(--mute)}
+.lps p b{color:var(--ink);font-weight:700}
+.lpk{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 16px}
+.lpk div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 11px;font-size:11px;color:var(--mute)}
+.lpk b{display:block;font-size:17px;color:var(--ink);font-weight:800;letter-spacing:-.02em}
+.lp3{display:grid;gap:8px;margin-bottom:12px}
+.lp3>div{background:var(--paper);border:1.5px dashed #cfcabd;border-radius:14px;padding:13px 14px;display:grid;grid-template-columns:28px 1fr;gap:4px 10px}
+.lp3 i{font-style:normal;font-size:18px;grid-row:span 2}
+.lp3 b{font-size:14.5px}
+.lp3 span{font-size:12px;color:var(--mute);line-height:1.6}
+.lp4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.lp .w{border-radius:14px;padding:13px;font-size:18px;display:flex;flex-direction:column;gap:3px}
+.lp .w b{font-size:14px}.lp .w span{font-size:11px;line-height:1.5;opacity:.85}
+.lp .w.me{background:var(--ink);color:#fff}.lp .w.ai{background:#dff0e8;color:var(--ai)}.lp .w.out{background:#e0e8fa;color:#2b5ab5}.lp .w.ppl{background:#f1ede4;color:var(--ask)}
+.lpq{background:var(--soft);border-left:3px solid var(--ink);padding:14px 16px;font-size:14px;line-height:1.9;color:var(--ink2);border-radius:0 12px 12px 0;margin:6px 0 14px}
+.lpq.big{font-size:15px;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--ink)}
+.lpq small{display:block;margin-top:8px;color:var(--mute);font-size:11px}
+.lp2{display:grid;gap:8px;margin-bottom:12px}
+.lp2>div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.lp2 b{display:block;font-size:15px;margin-bottom:3px}.lp2 span{font-size:12px;color:var(--mute);line-height:1.6}
+
+  /* ---------- アプリモード（iPhone / ホーム画面から起動）：枠を外して全画面 ---------- */
+  @media (max-width:600px), (display-mode:standalone){
+    body{background:var(--bg);overscroll-behavior:none}
+    .stage{display:block;padding:0;max-width:none}
+    .doc{display:none}
+    .phone{width:100%;border:0;border-radius:0;padding:0;box-shadow:none;position:static;background:var(--bg)}
+    .scr{border-radius:0;height:100vh;height:100dvh}
+    .notch{display:none}
+    .bar{padding-top:calc(env(safe-area-inset-top) + 10px)}
+    .tabs{order:9;margin:0;border-radius:0;padding:5px 6px calc(env(safe-area-inset-bottom) + 5px);background:#dedbd3;border-top:1px solid #d3cfc5}
+    .tabs button{font-size:10.5px;padding:6px 0 4px}
+    .tabs button i{font-size:15px}
+    .tabs button.on{background:var(--ink);color:#fff}
+    .view{padding-bottom:20px}
+  }
 </style>
 </head>
 <body>
@@ -444,6 +520,7 @@
     <button data-tab="ppl"><i>◍</i>人</button>
     <button data-tab="bal"><i>◔</i>配分</button>
     <button data-tab="log"><i>◎</i>自動</button>
+    <button data-tab="about"><i>◆</i>Laskとは</button>
   </div>
   <div class="tabhint" id="tabhint">今日の2つ・消えるもの・あなた抜きで回っているもの</div>
 
@@ -637,15 +714,19 @@
       <div class="sb" style="margin-top:6px"><button class="mini p">合ってる</button><button class="mini">直す</button></div></div>
     <div style="height:14px"></div>
 
-    <div class="menu m3">
-      <div class="mi" data-jump="s-dream-now"><span class="bg">2</span><b>12</b><u>仕事</u><small>プライム上場・経営AI</small></div>
-      <div class="mi" data-jump="s-dream-now"><span class="bg">1</span><b>6</b><u>家庭</u><small>親と旅行は休ませている</small></div>
-      <div class="mi" data-jump="s-dream-now"><span class="bg">3</span><b>9</b><u>趣味</u><small>釣り・PPL・チェロ</small></div>
-      <div class="mi ok2" data-jump="s-dream-now"><span class="bg z">0</span><b>4</b><u>体</u><small>前橋まで43日</small></div>
-      <div class="mi" data-jump="s-dream-now"><span class="bg">3</span><b>10</b><u>人生</u><small>海外に住む・南極・別荘</small></div>
-      <div class="mi acc" data-jump="s-dream-cand"><b>4</b><u>候補</u><small>あなたが登録していないもの</small></div>
+    <div class="menu m3" id="dgrid">
+      <div class="mi" data-area="work"><span class="bg">2</span><b>12</b><u>仕事</u><small>時価総額1,000億・AIワークフォース・Lask</small></div>
+      <div class="mi" data-area="home"><span class="bg">1</span><b>6</b><u>家庭</u><small>スイス・墓参り・両親</small></div>
+      <div class="mi" data-area="hobby"><span class="bg">3</span><b>9</b><u>趣味</u><small>船・釣り・PPL・別荘</small></div>
+      <div class="mi ok2" data-area="health"><span class="bg z">0</span><b>4</b><u>体</u><small>前橋・一生維持</small></div>
+      <div class="mi" data-area="dream"><span class="bg">3</span><b>10</b><u>人生</u><small>海外に住む・南極・チェロ</small></div>
+      <div class="mi acc" data-area="cand"><b>4</b><u>候補</u><small>口にしたが決めていない</small></div>
     </div>
-    <div class="mhint">◎ 41件を5つの領域に分けました。大きい数字が件数、<b>右上の赤丸が「止まっている数」</b>（子タスク0・90日以上 動いていない）。<br>タップで下に飛びます。いきなり全部は並べません。</div>
+    <div id="dlist" class="gone">
+      <div class="sec tight"><h4 id="dlistTitle">仕事</h4><span id="dlistClose" style="color:var(--ink);font-weight:700;cursor:pointer">✕ 全部に戻す</span></div>
+      <div class="dlist" id="dlistBody"></div>
+    </div>
+    <div class="mhint">◎ 41件を5つの領域に分けました。大きい数字が件数、<b>右上の赤丸が「止まっている数」</b>（子タスク0・90日以上 動いていない）。<br>タップでその領域の夢だけに絞ります。いきなり全部は並べません。</div>
 
     <div class="sec" id="s-dream-now"><h4>今 考えている夢</h4><span>熱があるもの · 6</span></div>
     <div class="stuck">
@@ -1152,6 +1233,75 @@
     <div class="foot">毎日 見る必要はありません。<b>「いま何が動いてる？」「いくらかかった？」<br>「本当に勝手なことしてない？」</b>と思ったときにだけ、ここに来てください。</div>
   </div>
 
+  <!-- ================= Laskとは（LP） ================= -->
+  <div class="page" id="about">
+    <div class="lp">
+      <div class="lph">
+        <div class="eyebrow">Lask とは</div>
+        <h1>あなたが「タスクだ」と思っていることは、<em>本当のタスクの 20%</em> でしかない。</h1>
+        <p>既存のタスク管理は、あなたが認識して、大事だと思って、自分で登録したものしか扱わない。今すぐ・顕在的・緊急・やらないといけないこと。それだけ。</p>
+        <div class="pct"><div class="pax"><b>20%</b><span>自分で登録したタスク<br>＝ 既存ツールが扱う全部</span></div><div class="pbx"><b>80%</b><span>本人すら気づいていないタスク<br>＝ Lask が発生させる</span></div></div>
+      </div>
+      <div class="lps">
+        <div class="num">01</div>
+        <h2>全てのデータから、<br>「あなたという OS」を理解する</h2>
+        <p>入力はしない。行動ログ（カレンダー・Slack・X・YouTube・会話・位置）、10年分の手書きノート、あなたの言葉のままの憲法、そして夢のリスト。Lask はそれを毎日読んで、<b>あなたがどういう人か</b>を組み直し続ける。</p>
+        <div class="lpk"><div><b>3,231+</b>行動ログ</div><div><b>30枚</b>年次ノート</div><div><b>4行</b>憲法</div><div><b>48本</b>命題</div><div><b>41件</b>夢</div></div>
+      </div>
+      <div class="lps">
+        <div class="num">02</div>
+        <h2>そこから、3つが出てくる</h2>
+        <div class="lp3">
+          <div><i>◎</i><b>本当にやるべきこと</b><span>あなたが登録していないのに、今日やらないと 10年後が変わるもの。「高宮さんに 30分」「結衣とスイス、子タスク 0」</span></div>
+          <div><i>🧬</i><b>気づいていない価値観</b><span>「幸せ」と言った 3回すべてが「朝、何もしない時間」だった。夢として書いたことは一度もない</span></div>
+          <div><i>🌱</i><b>気づいていない方向性</b><span>一度降ろした「別荘」が 4日後にまた出た。降ろした判断のほうを疑う。9年連続で未達の「英語」は、本当に欲しいのか</span></div>
+        </div>
+        <p class="sm">これが Lask の価値の 1つ目。<b>その人すら気づいていないタスクが、提案される。</b></p>
+      </div>
+      <div class="lps">
+        <div class="num">03</div>
+        <h2>提案されたタスクは、<br>誰がやるかまで分かる</h2>
+        <p>やるのは自分だけではない。AI が終わらせるもの、外に出せるもの、そして<b>人と繋がることで初めて動くもの</b>。Lask は 4つのどれで進むかを提案し、あなたはタップで変えるだけ。</p>
+        <div class="lp4">
+          <div class="w me">✍︎<b>自分</b><span>代わりがいないものだけ。1日 2つ</span></div>
+          <div class="w ai">🤖<b>AI</b><span>調べる・下書き・電話・比較表</span></div>
+          <div class="w out">🤝<b>外注</b><span>ランサーズの人。依頼文は Lask が書く</span></div>
+          <div class="w ppl">👤<b>人</b><span>「調べる」ではなく「聞いてみる」。人が言うから動く</span></div>
+        </div>
+      </div>
+      <div class="lps">
+        <div class="num">04</div>
+        <h2>進捗は、自動で動く</h2>
+        <p>AI が動いた分・人が返事した分・外注が納品した分が、あなた抜きで進む。追いかけるのは Lask。止まったものは詰めず「まだ興味ある？」だけ聞く。お金が動くのは、承認ボタンの 1回だけ。</p>
+        <div class="lpq">「仕事を人にやらせたいのがゴールではない。<b>仕組みとして自動に回っている状態が好き。</b>」</div>
+      </div>
+      <div class="lps">
+        <div class="num">05</div>
+        <h2>操作は 2つしかない</h2>
+        <div class="lp2"><div><b>止める</b><span>「違う」の 1タップ。消した記録が、口ごとの的中率になる</span></div><div><b>配分を変える</b><span>つまみを回すと、明日 出るものが変わる。仕事を下げれば、家族と親友が上がる</span></div></div>
+        <p class="sm">指示はしない。出して、選ばせるだけ。意志力も管理力も問わない。</p>
+      </div>
+      <div class="lps">
+        <div class="num">06</div>
+        <h2>10年のノートが証明していること</h2>
+        <p>「買える・作れる・決められるもの」は全部 実現した。IPO・家・運転手・船。「日々の自分を変える系」は、<b>仕組み化した瞬間だけ</b> 実現した — 9年書き続けた 65kg級の体は、大会・コーチ・計量記録を入れた年に到達した。</p>
+        <p>だから Lask は、止まっている夢に「頑張れ」を付けない。<b>仕組み（AI・外注・人）</b>を付ける。</p>
+      </div>
+      <div class="lps dark">
+        <div class="num">07</div>
+        <h2>ランサーズと、地続き</h2>
+        <p>「外注」の先にいるのは、ランサーズに集う AI ワークフォース。Lask が発生させたタスクのうち、あなたがやらないものが、そのまま<b>仕事の発生源</b>になる。個人の 80% と、ランサーズの供給が、同じ画面でつながる。</p>
+      </div>
+      <div class="lps">
+        <div class="lpq big">「人間が思いついてこれは絶対にタスクだと思うことは、本当のタスクの一部でしかない。<br><br>そういったものを管理し、アイデアを思い出させ、自動的に発生させ、<b>人生そのものを豊かにする</b>究極のタスク管理サービスを作りたい。」<small>— 2026-09-04</small></div>
+        <button class="big" onclick="show('home',true)">☀︎ 今日の画面を見る</button>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
   <!-- ==================== 詳細：タスク① ==================== -->
   <div class="page" id="t1">
     <div class="back" data-back>‹ 今日</div>
@@ -1450,7 +1600,8 @@
              tree:'何を考えているか。その上で、何をするか',
              ppl:'あなたを変えた人と、いま会っていない人',
              bal:'つまみを寄せると、明日 出るものが変わります',
-             log:'自分以外が、いま何をどこまで進めているか'};
+             log:'自分以外が、いま何をどこまで進めているか',
+             about:'あなたが気づいていない 80% を、誰がやるかまで'};
   function show(id,tab){
     document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on',p.id===id)});
     view.scrollTop=0;
@@ -1546,6 +1697,34 @@
     if(mtd && Math.random()<0.35){ yen+=Math.floor(Math.random()*4)+1;
       mtd.textContent='¥'+yen.toLocaleString(); }
   },1000);
+
+  /* ========== 夢：領域で絞り込む（v4 合流） ========== */
+const DREAMS={
+ work:[['時価総額 1,000億（2030）','2017「2020に」→ 13年スライド・降ろしていない','stop'],['東証プライム（2030.12）','子タスク 0・線が切れている','stop'],['AI Workforce 10万人の場','面談済 1万人 → 2年で 10万人・今日 動く','run'],['来期 EBITDA 10億','3月末 M&A が最大の分岐','run'],['M&A','毎年 計画・毎年 実行','run'],['Lask を世に出す','企画 17節・モック v3','run'],['経営AI／秋好OS','命題 48本・Railway 本番','run'],['IR・株価','2025 +31%','run'],['Plaud タイアップ','9月に売上計上したい','run'],['らんさ〜ず／秋好コンサル','火木 16:00 公開','run'],['所有物OS／家計OS','週次レポート','run'],['今期業績','1.8〜2.1億 見込','run']],
+ home:[['結衣とスイス','受験（2027春）が終わったら・子タスク 0','stop'],['墓参り（大坪家・秋好家）','毎年・2025 は行けた','keep'],['両親に会う（高槻）','30日・10月に','run'],['両親に料理を振る舞う','道具は揃った','run'],['キーちゃん','高槻の実家','keep'],['シャケちゃんとの思い出','思い出ボット 再設計中','run']],
+ hobby:[['船：港を巡って暮らす','伊東 30km 圏外・究極のキャンプ・毎週','run'],['釣り','先生を船に呼べない → 頼む','stop'],['PPL（自家用操縦士）','9/7 初出・船と同じ形','stop'],['別荘','降ろしたのに戻ってきた','stop'],['シーシャ基地（ベランダ）','炭・ラック・網戸','run'],['料理・キッチン道具','真空パック機・低温調理器・包丁','run'],['服・ガジェット','「買って生活の解像度を上げる」1つの熱','run'],['DJ','','keep'],['南極','AI が 3案 調べ終えている','stop']],
+ health:[['65kg級の体を一生維持','体脂肪 4〜5%・9年書いて 2026 到達','keep'],['前橋 大会','週5 継続中','run'],['睡眠をしっかり','早く寝る・酒を控える','keep'],['週5 筋トレ','月〜金 自主ト＋土 体幹','run']],
+ dream:[['海外に住む（2033）','2023「45〜50才で」→ 未着手','stop'],['英語','9年連続 目標 → 9年連続 未達','stop'],['チェロ','400日・優先度を下げた','stop'],['宇宙に行く','完了型・死ぬときに語ること','keep'],['Die with 0','2024 宣言 → 即実行','run'],['人格ごと OS 化（秋好OS）','2026 始動','run'],['かっこよく生きる','憲法・大','keep'],['誠実・公平','憲法・大','keep'],['死ぬときに後悔しない','憲法・大','keep'],['感謝','憲法・大・一番上','keep']],
+ cand:[['朝、何もしない時間','「幸せ」と言った 3回すべて','cand'],['別荘（戻ってきた）','9/3 降ろす → 9/7 再燃','cand'],['10年ノートを 1本に','らんさ〜ずの視聴者が一番見たいもの','cand'],['作った料理を人に振る舞う','出す相手だけが出てこない','cand']]};
+const ANAME={work:'仕事',home:'家庭',hobby:'趣味',health:'体',dream:'人生',cand:'候補'};
+const SNAME={run:'動いている',stop:'止まっている',keep:'維持型',cand:'候補'};
+  function toast(s){ var t=document.getElementById('toast'); if(!t){t=document.createElement('div');t.className='toast';t.id='toast';document.body.appendChild(t);} t.textContent=s; t.classList.add('on'); clearTimeout(toast.tm); toast.tm=setTimeout(function(){t.classList.remove('on')},2600); }
+  function filterDream(a){
+    document.querySelectorAll('#dgrid .mi').forEach(function(t){t.classList.toggle('sel',t.dataset.area===a);t.classList.toggle('dim',!!a&&t.dataset.area!==a)});
+    var box=document.getElementById('dlist'); if(!a){box.classList.add('gone');return}
+    box.classList.remove('gone');
+    document.getElementById('dlistTitle').textContent=ANAME[a]+'　'+DREAMS[a].length+'件';
+    document.getElementById('dlistBody').innerHTML=DREAMS[a].map(function(r){var t=r[0],m=r[1],st=r[2];
+      return '<div class="dl"><div><div class="t">'+t+'</div>'+(m?'<div class="m">'+m+'</div>':'')+'</div><span class="dst '+st+'">'+SNAME[st]+'</span></div>';}).join('');
+    view.scrollTo({top:box.getBoundingClientRect().top-view.getBoundingClientRect().top+view.scrollTop-8,behavior:'smooth'});
+  }
+  document.querySelectorAll('#dgrid .mi').forEach(function(t){t.addEventListener('click',function(){filterDream(t.classList.contains('sel')?null:t.dataset.area)})});
+  var dc=document.getElementById('dlistClose'); if(dc) dc.addEventListener('click',function(){filterDream(null)});
+
+  /* ========== PWA：service worker（http(s) で配信されている時だけ） ========== */
+  if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  }
 </script>
 </body>
 </html>
