@@ -486,6 +486,12 @@
 .lp2>div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
 .lp2 b{display:block;font-size:15px;margin-bottom:3px}.lp2 span{font-size:12px;color:var(--mute);line-height:1.6}
 
+  /* 操作の結果 */
+  .row.done .cb{background:var(--ink);border-color:var(--ink);position:relative}
+  .row.done .cb::after{content:"✓";color:#fff;font-size:13px;position:absolute;left:4px;top:0}
+  .row.done .t{text-decoration:line-through;opacity:.55}
+  button.sel,.mini.sel{background:var(--ink)!important;color:#fff!important;border-color:var(--ink)!important}
+
   /* ---------- アプリモード（iPhone / ホーム画面から起動）：枠を外して全画面 ---------- */
   @media (max-width:600px), (display-mode:standalone){
     body{background:var(--bg);overscroll-behavior:none}
@@ -1720,6 +1726,83 @@ const SNAME={run:'動いている',stop:'止まっている',keep:'維持型',ca
   }
   document.querySelectorAll('#dgrid .mi').forEach(function(t){t.addEventListener('click',function(){filterDream(t.classList.contains('sel')?null:t.dataset.area)})});
   var dc=document.getElementById('dlistClose'); if(dc) dc.addEventListener('click',function(){filterDream(null)});
+
+
+  /* ========== 操作履歴（裏のDB）：押したものを全部 Lask のDBに残し、状態を復元する ========== */
+  var ONLINE = /^https?:/.test(location.protocol);
+  var HIDE_LABELS = ['違う','もういい','降ろす','消す','今日は当てない','いらない'];
+  var ITEM_SEL = '.row,.it,.st,.li,.person,.dl,.mi,.hero,.lv,.mhint,.kz,.card';
+  function norm(s){ return (s||'').replace(/\s+/g,' ').trim(); }
+  function titleOf(item){
+    if(!item) return '';
+    if(item.classList.contains('hero')) return '一言';
+    var el=item.querySelector('.t')||item.querySelector('.sh b')||item.querySelector('b')||item.querySelector('u');
+    var c=(el||item).cloneNode(true); c.querySelectorAll('.tag,.rl,.hot,.chev').forEach(function(x){x.remove()});
+    var t=norm(c.textContent);
+    return t.slice(0,80);
+  }
+  function areaOf(item){
+    var tag=item&&item.querySelector('.tag,.rl');
+    if(!tag) return null;
+    var c=tag.className;
+    return /work|\bw\b/.test(c)?'work':/home|ho2/.test(c)?'home':/hobby|hb/.test(c)?'hobby':/health|he/.test(c)?'health':/dream|dr/.test(c)?'dream':null;
+  }
+  function sectionOf(el,page){
+    var secs=page.querySelectorAll('.sec h4'); var best='';
+    for(var i=0;i<secs.length;i++){ if(secs[i].compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING) best=norm(secs[i].textContent); }
+    return best;
+  }
+  function keyOf(page,item){ return page.id+'|'+titleOf(item); }
+  function post(op){
+    if(!ONLINE) return;
+    try{ fetch('/api/op',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(op),keepalive:true}).catch(function(){}); }catch(e){}
+  }
+  function applyEffect(item,btn,effect,label,silent){
+    if(effect==='hide'){ item.classList.add('gone'); }
+    else if(effect==='done'){ item.classList.add('done'); }
+    else if(effect==='undone'){ item.classList.remove('done'); }
+    else if(effect==='pressed'&&btn){
+      var box=btn.parentNode; box.querySelectorAll('button').forEach(function(b){b.classList.remove('sel')}); btn.classList.add('sel');
+    }
+    if(!silent){ toast(effect==='hide'?'消しました。この口の的中率に反映します':effect==='done'?'終わった。次に起きることは Lask が動かします':effect==='undone'?'戻しました':'記録しました：'+label); }
+  }
+  view.addEventListener('click',function(e){
+    var page=e.target.closest('.page'); if(!page) return;
+    var cb=e.target.closest('.cb');
+    if(cb){ e.stopPropagation(); e.preventDefault();
+      var row=cb.closest(ITEM_SEL); var done=!row.classList.contains('done');
+      var op={kind:'toggle',page:page.id,section:sectionOf(row,page),item:titleOf(row),label:done?'✓ 終わった':'✓ 戻す',key:keyOf(page,row),effect:done?'done':'undone',area:areaOf(row)};
+      applyEffect(row,null,op.effect,op.label); post(op); return; }
+    var btn=e.target.closest('button');
+    if(btn && !btn.closest('#tabs')){
+      var item=btn.closest(ITEM_SEL)||page; var label=norm(btn.textContent).slice(0,80);
+      var hide=HIDE_LABELS.indexOf(label)>=0;
+      var op={kind:'click',page:page.id,section:sectionOf(btn,page),item:titleOf(item),label:label,area:areaOf(item)};
+      if(hide){ op.effect='hide'; op.key=keyOf(page,item); if(item.classList.contains('hero')){ item=btn.closest('.heroact')||btn.parentNode; } }
+      else { op.effect='pressed'; op.key=keyOf(page,item)+'|'+label; }
+      applyEffect(item,btn,op.effect,label); post(op); return; }
+    var go=e.target.closest('[data-go],[data-jump],.mi');
+    if(go){ var it=go.closest(ITEM_SEL)||go; post({kind:'view',page:page.id,section:sectionOf(go,page),item:titleOf(it),label:go.getAttribute('data-go')||go.getAttribute('data-jump')||go.dataset.area||'',area:areaOf(it)}); }
+  },true);
+  // 配分のつまみ：離した時だけ記録
+  if(box){ box.addEventListener('change',function(e){ var i=+e.target.dataset.i; post({kind:'range',page:'bal',section:'配分',item:DOM[i].k,label:'つまみ',value:e.target.value,key:'bal|'+DOM[i].k,effect:'value'}); }); }
+  // タブ・詳細ページの表示
+  var _show=show; show=function(id,tab){ _show(id,tab); post({kind:'view',page:id,label:tab?'タブ':'詳細'}); };
+  // 復元
+  if(ONLINE){
+    fetch('/api/state').then(function(r){return r.json()}).then(function(st){
+      var items={}; document.querySelectorAll('.page').forEach(function(pg){ pg.querySelectorAll(ITEM_SEL).forEach(function(it){ var k=keyOf(pg,it); if(!items[k]) items[k]=it; }); items[pg.id+'|一言']=pg.querySelector('.hero'); });
+      Object.keys(st).forEach(function(k){
+        var v=st[k]||{};
+        if(k.indexOf('bal|')===0){ var i=DOM.findIndex(function(d){return d.k===k.slice(4)}); var inp=box&&box.querySelector('input[data-i="'+i+'"]'); if(inp){ inp.value=v.value; cur[i]=+v.value; } return; }
+        var parts=k.split('|'); var it=items[parts[0]+'|'+parts[1]]; if(!it) return;
+        if(v.effect==='pressed'){ var b=[].slice.call(it.querySelectorAll('button')).find(function(x){return norm(x.textContent)===v.label}); if(b) applyEffect(it,b,'pressed',v.label,true); }
+        else if(v.effect==='hide'){ if(it.classList.contains('hero')){ var ha=it.querySelector('.heroact'); if(ha) ha.classList.add('gone'); } else it.classList.add('gone'); }
+        else if(v.effect==='done') it.classList.add('done');
+      });
+      render();
+    }).catch(function(){});
+  }
 
   /* ========== PWA：service worker（http(s) で配信されている時だけ） ========== */
   if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){

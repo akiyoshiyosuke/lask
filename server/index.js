@@ -6,6 +6,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import * as db from './db.js';
+import * as mothership from './mothership.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const UI = path.join(__dirname, '..', 'ui');
@@ -53,6 +55,27 @@ button{font-size:15px;font-weight:700;padding:13px;border:0;border-radius:12px;b
 <body><form method="post" action="/auth"><b>Lask</b><input name="p" type="password" inputmode="numeric" autocomplete="current-password" autofocus placeholder="合言葉"><button>入る</button><small>${wrong ? '違います' : ''}</small></form></body></html>`, 'text/html; charset=utf-8');
 }
 
+// ---- /api（合言葉の内側だけ）----
+const J = 'application/json; charset=utf-8';
+function readJson(req) {
+  return new Promise((ok, ng) => { let b = ''; req.on('data', d => { b += d; if (b.length > 2e5) req.destroy(); }); req.on('end', () => { try { ok(b ? JSON.parse(b) : {}); } catch (e) { ng(e); } }); });
+}
+const S = (v, n = 200) => v == null ? null : String(v).replace(/\s+/g, ' ').trim().slice(0, n);
+async function api(req, res, p) {
+  if (p === '/api/op' && req.method === 'POST') {
+    const b = await readJson(req);
+    if (!b.kind || !b.label && b.kind !== 'view') return send(res, 400, '{"error":"kind/label"}', J);
+    const row = await db.addOp({ kind: S(b.kind, 20), page: S(b.page, 40), section: S(b.section, 120), item: S(b.item, 200), label: S(b.label, 80),
+      value: S(b.value, 200), key: S(b.key, 400), effect: S(b.effect, 20), area: S(b.area, 20), ua: S(req.headers['user-agent'], 200) });
+    return send(res, 200, JSON.stringify({ id: row.id, ts: row.ts }), J);
+  }
+  if (p === '/api/state') return send(res, 200, JSON.stringify(await db.getState()), J);
+  if (p === '/api/ops') return send(res, 200, JSON.stringify(await db.recentOps(Math.min(200, +url_limit(req) || 50))), J);
+  if (p === '/api/health') return send(res, 200, JSON.stringify({ db: db.hasDb(), mothership: !!process.env.NOTION_TOKEN }), J);
+  return send(res, 404, '{"error":"no such api"}', J);
+}
+function url_limit(req) { return new URL(req.url, 'http://x').searchParams.get('limit'); }
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   const p = url.pathname;
@@ -75,7 +98,7 @@ const server = http.createServer((req, res) => {
 
   if (!authed(req)) return gate(res, false);
   if (ROUTES[p]) return file(res, ROUTES[p]);
-  if (p.startsWith('/api/')) return send(res, 200, JSON.stringify({ ok: true, note: '②実データはここに生える' }), 'application/json; charset=utf-8');
+  if (p.startsWith('/api/')) return api(req, res, p).catch(e => { console.error(e); send(res, 500, JSON.stringify({ error: String(e.message) }), 'application/json; charset=utf-8'); });
   return file(res, p.slice(1));
 });
-server.listen(PORT, () => console.log('Lask on :' + PORT));
+db.init().catch(e => console.error('[db]', e.message)).then(() => { mothership.start(); server.listen(PORT, () => console.log('Lask on :' + PORT)); });
