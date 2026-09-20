@@ -36,7 +36,8 @@ scripts/shot.mjs    スクショ生成（Playwright）
 ## 開発
 - ビルド不要。`ui/lask-home.html` をブラウザで直接開く（幅を 600px 以下にするとアプリモード）
 - サーバーを手元で: `LASK_PASSCODE=xxxx npm start` → http://localhost:3000 （合言葉画面 → `/`）。`/25` `/board` も配る
-- 本番: Railway（GitHub `akiyoshiyosuke/lask` の main）。Variables に `LASK_PASSCODE`。URL は Railway のドメイン（非公開・合言葉つき・noindex）
+- 本番: https://lask-production.up.railway.app （Railway プロジェクト `accomplished-encouragement`・サービス `lask`。GitHub `akiyoshiyosuke/lask` に接続、push で自動デプロイ、ポート 8080）。Variables に `LASK_PASSCODE`（合言葉。リポジトリに書かない）。非公開・合言葉つき・noindex
+- 本番に繋ぐブランチは Railway の Settings → Source → Branch。2026-09-20 時点は `feat/app-pwa`（main マージ後に `main` へ戻す）
 - スクショ: `npm i && npx playwright install chromium` → `npm run shot`（全タブ）／`npm run shot -- ppl t1`（指定）→ `shots/<id>.png`
   - `SCALE`（既定1.24）で解像度、`CHROMIUM` で既存Chromiumのパスを指定できる
   - 対象は `lask-home.html` のみ（`lask-25.html` は別構造で `#view` にJS描画）
